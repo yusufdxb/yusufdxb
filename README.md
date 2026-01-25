@@ -1,48 +1,72 @@
 # Yusuf Guenena
 
-Robotics Engineer | Embedded Systems | Autonomous & Assistive Robotics  
+Robotics & Embedded Systems Engineer  
+Autonomous • Assistive • Medical Robotics  
+
 M.S. Robotics Engineering (Intelligent Control) — Wayne State University
+
+I build **end-to-end robotic systems** that tightly integrate perception, control, embedded electronics, and real hardware, with a focus on **safety-critical and assistive applications**.
 
 ---
 
 ## 🔧 What I Build
-I design and prototype **real robotic systems** that integrate:
-- ROS 2 (Humble / Jazzy)
-- Embedded electronics & sensor fusion
-- Perception, control, and human-robot interaction
-- Hardware–software co-design
 
-My work focuses on **medical robotics, assistive autonomy, and intelligent systems**.
+I design and prototype **real-world robotic systems**, not simulations only. My work emphasizes:
+
+- Perception, control, and human–robot interaction  
+- ROS 2 (Humble / Jazzy) system integration  
+- Embedded electronics & sensor fusion  
+- Hardware–software co-design  
+
+My interests center on **medical robotics, assistive autonomy, and intelligent systems**.
 
 ---
 
 ## 🚀 Flagship Projects
 
 ### 🏥 RADAR — Remote Autonomous Doctor Assistance Robot
-ROS 2–based medical telepresence robot with real-time control, vitals monitoring, and custom Qt GUI.  
+ROS 2–based medical telepresence robot enabling real-time remote control, physiological monitoring, and clinician interaction through a custom Qt GUI.
+
 **Tech:** ROS 2, C++, Python, MAX30102, TurtleBot3, Qt6  
 👉 https://github.com/yusufdxb/RADAR-Telepresence-Robot
 
+---
+
 ### ♻️ EcoSort — Smart Waste Sorting Bin
-Embedded system for automated waste classification using sensor fusion and mechanical actuation.  
+Embedded mechatronic system for automated waste classification using multi-sensor fusion and mechanically actuated sorting.
+
 **Tech:** Arduino, load cells, color & IR sensors, servos, CAD  
 👉 https://github.com/yusufdxb/EcoSort-bin
 
+---
+
 ### 🦮 GO2 Seeing-Eye Dog (Research Project)
-ROS 2 autonomy and perception stack for assistive navigation using Unitree GO2.  
-Focus on safety-critical perception (doors, stairs, obstacles) and voice interaction.
+ROS 2 autonomy and perception stack for assistive navigation using Unitree GO2, targeting safe mobility for visually impaired users.
+
+Focus on safety-critical perception (doors, stairs, obstacles) and voice interaction.  
+**Status:** Research & development in progress
 
 ---
 
 ## 🧠 Technical Stack
-- **Robotics:** ROS 2, Gazebo, RViz, tf2
-- **Languages:** C++, Python, MATLAB
-- **Embedded:** Arduino, Raspberry Pi, sensors & actuators
-- **Tools:** Linux, Git, Qt, Fusion 360
+
+- **Robotics:** ROS 2, Gazebo, RViz, tf2  
+- **Languages:** C++, Python, MATLAB  
+- **Embedded:** Arduino, Raspberry Pi, sensors & actuators  
+- **Tools:** Linux, Git, Qt6, Fusion 360  
+
+---
+
+## 🎯 Current Focus
+
+- Assistive autonomy and navigation for legged robots (Unitree GO2)  
+- Safety-critical perception (doors, stairs, obstacles)  
+- Robust ROS 2 system design for real hardware  
 
 ---
 
 ## 📫 Contact
+
+- Email: yusuf.a.guenena@gmail.com  
+- GitHub: https://github.com/yusufdxb  
 - LinkedIn: https://www.linkedin.com/in/yusuf-guenena
-- Email: yusuf.a.guenena@gmail.com
-- 
