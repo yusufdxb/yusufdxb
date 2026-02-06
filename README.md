@@ -76,5 +76,4 @@ Primary research themes include:
 ## 📫 Contact
 
 - Email: yusuf.a.guenena@gmail.com  
-- GitHub: https://github.com/yusufdxb  
 - LinkedIn: https://www.linkedin.com/in/yusuf-guenena
