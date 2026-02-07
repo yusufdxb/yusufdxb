@@ -42,11 +42,8 @@ Embedded mechatronic system for automated waste classification using multi-senso
 
 ### 🦮 GO2 Seeing-Eye Dog (Research Project)
 
-
-[![GO2 Seeing-Eye Dog Demo](https://img.youtube.com/vi/EAaj1M6WRpo/0.jpg)](https://youtube.com/shorts/EAaj1M6WRpo)
-
-> Assistive robotics prototype using **ROS 2**, onboard perception, and multimodal human–robot interaction.  
-> Focused on real-world navigation and guidance for visually impaired users.
+Assistive robotics prototype using **ROS 2**, onboard perception, and multimodal human–robot interaction.  
+Focused on real-world navigation and guidance for visually impaired users.
 ROS 2–based autonomy, perception, and interaction framework for assistive navigation using Unitree GO2, targeting safe and intuitive mobility for visually impaired users.
 
 This project constitutes a Master’s thesis centered on multimodal human–robot interaction and safety-critical perception for assistive robotics. The core research investigates audio-visual grounding for human intent inference, where a user issues a spoken command (e.g., “come here”), the robot performs audio perception and sound-source localization, orients toward the acoustic cue, executes vision-based human identification, confirms user intent, and subsequently performs human-aware, safety-constrained navigation toward the caller.
@@ -59,6 +56,8 @@ Primary research themes include:
 - Human-aware navigation and conservative assistive behaviors
 
 **Status:** Active research and development (ROS 2 stack integration and experimental validation in progress).
+
+[![GO2 Demo](https://i.ytimg.com/vi/EAaj1M6WRpo/hqdefault.jpg)](https://youtube.com/shorts/EAaj1M6WRpo)
 
 ---
 
