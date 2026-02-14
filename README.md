@@ -25,9 +25,9 @@ My interests center on **medical robotics, assistive autonomy, and intelligent s
 ## 🚀 Flagship Projects
 
 ### 🏥 RADAR — Remote Autonomous Doctor Assistance Robot
-ROS 2–based medical telepresence robot enabling real-time remote control, physiological monitoring, and clinician interaction through a custom Qt GUI.
+ROS 2–based medical telepresence robot enabling real-time remote control, physiological monitoring, and clinician interaction through a custom Qt GUI. Autonomous lab deliveries using slam and april tags.
 
-**Tech:** ROS 2, C++, Python, MAX30102, TurtleBot3, Qt6  
+**Tech:** ROS 2, C++, Python, MAX30102, TurtleBot3, Qt6, SLAM
 👉 https://github.com/yusufdxb/RADAR-Telepresence-Robot
 
 ---
