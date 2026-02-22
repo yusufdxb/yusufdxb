@@ -24,22 +24,6 @@ My interests center on **medical robotics, assistive autonomy, and intelligent s
 
 ## 🚀 Flagship Projects
 
-### 🏥 RADAR — Remote Autonomous Doctor Assistance Robot
-ROS 2–based medical telepresence robot enabling real-time remote control, physiological monitoring, and clinician interaction through a custom Qt GUI. Autonomous lab deliveries using slam and april tags.
-
-**Tech:** ROS 2, C++, Python, MAX30102, TurtleBot3, Qt6, SLAM
-👉 https://github.com/yusufdxb/RADAR-Telepresence-Robot
-
----
-
-### ♻️ EcoSort — Smart Waste Sorting Bin
-Embedded mechatronic system for automated waste classification using multi-sensor fusion and mechanically actuated sorting.
-
-**Tech:** Arduino, load cells, color & IR sensors, servos, CAD  
-👉 https://github.com/yusufdxb/EcoSort-bin
-
----
-
 ### 🦮 GO2 Seeing-Eye Dog (Research Project)
 
 Assistive robotics prototype using **ROS 2**, onboard perception, and multimodal human–robot interaction.  
@@ -60,6 +44,23 @@ Primary research themes include:
 [![GO2 Demo](https://i.ytimg.com/vi/EAaj1M6WRpo/hqdefault.jpg)](https://youtube.com/shorts/EAaj1M6WRpo)
 
 ---
+
+### 🏥 RADAR — Remote Autonomous Doctor Assistance Robot
+ROS 2–based medical telepresence robot enabling real-time remote control, physiological monitoring, and clinician interaction through a custom Qt GUI. Autonomous lab deliveries using slam and april tags.
+
+**Tech:** ROS 2, C++, Python, MAX30102, TurtleBot3, Qt6, SLAM
+👉 https://github.com/yusufdxb/RADAR-Telepresence-Robot
+
+---
+
+### ♻️ EcoSort — Smart Waste Sorting Bin
+Embedded mechatronic system for automated waste classification using multi-sensor fusion and mechanically actuated sorting.
+
+**Tech:** Arduino, load cells, color & IR sensors, servos, CAD  
+👉 https://github.com/yusufdxb/EcoSort-bin
+
+---
+
 
 ## 🧠 Technical Stack
 
