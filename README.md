@@ -28,6 +28,11 @@ My interests center on **medical robotics, assistive autonomy, and intelligent s
 ### 🦮 GO2 Seeing-Eye Dog — Master's Thesis
 [![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
 
+<p align="center">
+  <a href="https://youtube.com/shorts/EAaj1M6WRpo">
+    <img src="https://img.youtube.com/vi/EAaj1M6WRpo/maxresdefault.jpg" width="480">
+  </a>
+</p>
 Assistive robotics system built on the **Unitree GO2** quadruped, targeting safe and intuitive mobility for visually impaired users.
 
 Core research: **audio-visual grounding for human intent inference** — the user speaks a command, the robot localizes the sound source, visually identifies the caller, confirms intent, and navigates toward them using safety-constrained Nav2.
