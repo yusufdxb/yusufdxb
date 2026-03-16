@@ -43,7 +43,12 @@ Primary research themes include:
 
 **Status:** Active research and development (ROS 2 stack integration and experimental validation in progress).
 
-
+**currently whisper has been implemented and more functions are implemented see the demo video below**
+<p align="center">
+  <a href="https://youtu.be/Ac-OsyQlgBo">
+    <img src="https://img.youtube.com/vi/Ac-OsyQlgBo/maxresdefault.jpg" width="640">
+  </a>
+</p>
 ---
 
 ### 🏥 RADAR — Remote Autonomous Doctor Assistance Robot
