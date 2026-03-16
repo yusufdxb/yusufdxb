@@ -7,6 +7,8 @@ M.S. Robotics Engineering (Intelligent Control) — Wayne State University
 
 I build **end-to-end robotic systems** that tightly integrate perception, control, embedded electronics, and real hardware, with a focus on **safety-critical and assistive applications**.
 
+[![GO2 Demo](https://i.ytimg.com/vi/EAaj1M6WRpo/hqdefault.jpg)](https://youtube.com/shorts/EAaj1M6WRpo)
+
 ---
 
 ## 🔧 What I Build
@@ -41,7 +43,6 @@ Primary research themes include:
 
 **Status:** Active research and development (ROS 2 stack integration and experimental validation in progress).
 
-[![GO2 Demo](https://i.ytimg.com/vi/EAaj1M6WRpo/hqdefault.jpg)](https://youtube.com/shorts/EAaj1M6WRpo)
 
 ---
 
