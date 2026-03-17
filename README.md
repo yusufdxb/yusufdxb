@@ -120,6 +120,15 @@ Embedded mechatronic system for automated waste classification using multi-senso
 
 ---
 
+## 📊 GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=yusufdxb&show_icons=true&theme=dark&hide_border=true&count_private=true" height="160"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=yusufdxb&layout=compact&theme=dark&hide_border=true&langs_count=6" height="160"/>
+</p>
+
+---
+
 ## 📫 Contact
 
 - 📧 Email: [yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
