@@ -28,21 +28,21 @@
 
 I'm a robotics engineer who builds **complete, functional systems** — from embedded firmware through autonomous behavior and human-robot interaction. My thesis work involves a Unitree GO2 quadruped that guides visually impaired users using audio-visual perception, which means I spend a lot of time making robots work reliably on real hardware, not just in simulation.
 
-What makes my background unusual: I do the **full stack** — C++ control loops at 50 Hz, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Every project here has been built and tested on physical hardware.
+What makes my background unusual: I do the **full stack** — C++ control loops, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Most of my projects have been built and validated on physical hardware, and my current thesis work is pushing that further into assistive robotics research.
 
 ---
 
 ## Featured Projects
 
-### 🦮 GO2 Seeing-Eye Dog — Master's Thesis
-> *Assistive quadruped robot for visually impaired users*
+### 🦮 GO2 Seeing-Eye Dog — Master's Thesis *(In Progress)*
+> *Assistive quadruped robot for visually impaired users — active research*
 
 [![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
-[![Demo](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=flat&logo=youtube)](https://youtube.com/shorts/EAaj1M6WRpo)
+![Status](https://img.shields.io/badge/Status-Research_%26_Design_Phase-orange?style=flat)
 
-The robot listens for a voice command → localizes the speaker with a microphone array (GCC-PHAT) → confirms identity visually with YOLOv8 → navigates toward them using safety-constrained Nav2. Also includes a C++ ROS 2 gait controller running at 50 Hz with closed-form leg IK.
+Research into reliable human-following and identity-gated navigation on the Unitree GO2 for visually impaired users. The focus is a publishable behavior set — follow me, walk with me, stop/wait, and robust reacquisition after occlusion — with comparisons against AprilTag-only, phone-only, and stock Unitree baselines.
 
-`ROS 2 Humble` `C++17` `Python` `YOLOv8` `Nav2` `Whisper ASR` `GCC-PHAT` `Unitree GO2` `Jetson Orin`
+`ROS 2` `YOLOv8` `Nav2` `Whisper ASR` `GCC-PHAT` `Unitree GO2` `Jetson Orin` `Person Re-ID`
 
 ---
 
