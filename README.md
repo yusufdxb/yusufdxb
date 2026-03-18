@@ -1,26 +1,10 @@
-<p align="center">
-  <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=Hey%2C+I'm+Yusuf+Guenena+%F0%9F%91%8B;Robotics+Engineer;ROS+2+%7C+C%2B%2B+%7C+Python+%7C+Embedded+Systems;Building+robots+that+work+in+the+real+world" alt="Typing SVG" />
-  </a>
-</p>
+# Yusuf Guenena
 
-<p align="center">
-  <strong>M.S. Robotics Engineering — Wayne State University</strong><br/>
-  Assistive Robots · Medical Robotics · Autonomous Systems · Real Hardware
-</p>
+**M.S. Robotics Engineering — Wayne State University**
+Assistive Robots · Medical Robotics · Autonomous Systems · Real Hardware
 
-<p align="center">
-  <a href="https://www.linkedin.com/in/yusuf-guenena">
-    <img src="https://img.shields.io/badge/LinkedIn-yusuf--guenena-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
-  </a>
-  <a href="mailto:yusuf.a.guenena@gmail.com">
-    <img src="https://img.shields.io/badge/Email-yusuf.a.guenena@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" />
-  </a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/🎯_Actively_seeking_internship_opportunities-brightgreen?style=for-the-badge" />
-</p>
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-yusuf--guenena-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yusuf-guenena)
+[![Email](https://img.shields.io/badge/Email-yusuf.a.guenena%40gmail.com-EA4335?logo=gmail&logoColor=white)](mailto:yusuf.a.guenena@gmail.com)
 
 ---
 
@@ -126,17 +110,6 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 
 ---
 
-## Let's Connect
+## Contact
 
-I'm actively looking for **robotics, embedded systems, or autonomous systems internship opportunities**.
-
-If you're working on anything involving ROS 2, perception, legged robots, or real-hardware systems — let's talk.
-
-<p align="center">
-  <a href="https://www.linkedin.com/in/yusuf-guenena">
-    <img src="https://img.shields.io/badge/Connect_on_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
-  </a>
-  <a href="mailto:yusuf.a.guenena@gmail.com">
-    <img src="https://img.shields.io/badge/Send_an_Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" />
-  </a>
-</p>
+[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com) · [LinkedIn](https://www.linkedin.com/in/yusuf-guenena)
