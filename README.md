@@ -67,7 +67,6 @@ YOLOv8 detects objects in a Gazebo environment → the GO2 autonomously navigate
 > *Embedded waste classifier — 97.5% accuracy, no ML required*
 
 [![Repo](https://img.shields.io/badge/GitHub-EcoSort--bin-181717?style=flat&logo=github)](https://github.com/yusufdxb/EcoSort-bin)
-[![Demo](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=flat&logo=youtube)](https://youtu.be/RpR4vYVQu_Y)
 
 Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 classifies waste and actuates a servo-driven sorting platform. 40-trial validation, 97.5% accuracy, ~$70 BOM.
 
