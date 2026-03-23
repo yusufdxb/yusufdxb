@@ -14,6 +14,8 @@ I'm a robotics engineer who builds **complete, functional systems** — from emb
 
 What makes my background unusual: I do the **full stack** — C++ control loops, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Most of my projects have been built and validated on physical hardware, and my current thesis work is pushing that further into assistive robotics research.
 
+Currently building assistive robotics thesis work on the Unitree GO2, with public projects spanning ROS 2 autonomy, telepresence, embedded sensing, and mechatronics.
+
 ---
 
 ## Featured Projects
@@ -26,6 +28,8 @@ What makes my background unusual: I do the **full stack** — C++ control loops,
 
 Research into reliable human-following and identity-gated navigation on the Unitree GO2 for visually impaired users. The focus is a publishable behavior set — follow me, walk with me, stop/wait, and robust reacquisition after occlusion — with comparisons against AprilTag-only, phone-only, and stock Unitree baselines.
 
+Public repo includes audio perception, visual perception, intent grounding, safety monitoring, custom ROS 2 messages, and a C++ gait controller.
+
 `ROS 2` `YOLOv8` `Nav2` `Whisper ASR` `GCC-PHAT` `Unitree GO2` `Jetson Orin` `Person Re-ID`
 
 ---
@@ -35,7 +39,7 @@ Research into reliable human-following and identity-gated navigation on the Unit
 
 [![Repo](https://img.shields.io/badge/GitHub-RADAR--Telepresence--Robot-181717?style=flat&logo=github)](https://github.com/yusufdxb/RADAR-Telepresence-Robot)
 
-Clinicians remotely navigate the robot, stream live video with pan-tilt control, and monitor patient SpO₂ and heart rate in real time — all through a single Qt 6 operator interface. Modular ROS 2 node architecture; fully functional and validated.
+Clinicians remotely navigate the robot, stream live video with pan-tilt control, and monitor patient SpO₂ and heart rate in real time — all through a single Qt 6 operator interface. Hardware-tested across teleop, video, pan-tilt control, and vitals sensing; Qt operator GUI implemented in the public repo.
 
 `ROS 2` `Qt 6` `OpenCV` `MAX30102` `Raspberry Pi` `C++` `Python`
 
@@ -46,7 +50,7 @@ Clinicians remotely navigate the robot, stream live video with pan-tilt control,
 
 [![Repo](https://img.shields.io/badge/GitHub-ros2--go2--nav2--yolo-181717?style=flat&logo=github)](https://github.com/yusufdxb/ros2-go2-nav2-yolo)
 
-YOLOv8 detects objects in a Gazebo environment → the GO2 autonomously navigates toward them via Nav2. Built on the CHAMP quadruped controller stack with SLAM Toolbox for mapping.
+GO2 simulation stack integrating Gazebo, CHAMP, SLAM Toolbox, Nav2, and a perception-to-navigation pipeline. Built on the CHAMP quadruped controller stack with SLAM Toolbox for mapping.
 
 `ROS 2` `YOLOv8` `Nav2` `CHAMP` `Gazebo` `SLAM Toolbox`
 
