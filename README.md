@@ -12,7 +12,7 @@ Assistive Robots · Medical Robotics · Autonomous Systems · Real Hardware
 
 I'm a robotics engineer who builds **complete, functional systems** — from embedded firmware through autonomous behavior and human-robot interaction. My thesis work involves a Unitree GO2 quadruped that guides visually impaired users using audio-visual perception, which means I spend a lot of time making robots work reliably on real hardware, not just in simulation.
 
-What makes my background unusual: I do the **full stack** — C++ control loops, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Most of my projects have been built and validated on physical hardware, and my current thesis work is pushing that further into assistive robotics research.
+What's my background: I do the **full stack** — C++ control loops, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Most of my projects have been built and validated on physical hardware, and my current thesis work is pushing that further into assistive robotics research.
 
 Currently building assistive robotics thesis work on the Unitree GO2, with public projects spanning ROS 2 autonomy, telepresence, embedded sensing, and mechatronics.
 
