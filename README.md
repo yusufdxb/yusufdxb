@@ -46,13 +46,24 @@ Clinicians remotely navigate the robot, stream live video with pan-tilt control,
 ---
 
 ### 🤖 GO2 Nav2 + YOLOv8
-> *Autonomous object detection and navigation in simulation*
+> *Autonomous object detection and navigation in Gazebo simulation*
 
 [![Repo](https://img.shields.io/badge/GitHub-ros2--go2--nav2--yolo-181717?style=flat&logo=github)](https://github.com/yusufdxb/ros2-go2-nav2-yolo)
 
-GO2 simulation stack integrating Gazebo, CHAMP, SLAM Toolbox, Nav2, and a perception-to-navigation pipeline. Built on the CHAMP quadruped controller stack with SLAM Toolbox for mapping.
+Full GO2 simulation stack integrating Gazebo Classic, CHAMP, SLAM Toolbox, Nav2, and a YOLOv8 detection-to-navigation pipeline. YOLOv8n benchmarked at 53 ms mean latency / 18.8 fps on CPU. Documents 10 non-obvious DDS/TF/SLAM integration bugs and fixes.
 
 `ROS 2` `YOLOv8` `Nav2` `CHAMP` `Gazebo` `SLAM Toolbox`
+
+---
+
+### 🔧 HELIX — ROS 2 Fault Detection System
+> *Lifecycle-node monitoring for robotics fault sensing*
+
+[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
+
+ROS 2 fault monitoring prototype: heartbeat liveness checks, rolling Z-score anomaly detection, and log-pattern parsing — all publishing structured `FaultEvent` messages. AnomalyDetector benchmarked at 46k samples/sec with 100% TPR and 0% FPR across all tested thresholds.
+
+`ROS 2` `Python` `Fault Detection` `Lifecycle Nodes` `Systems Monitoring`
 
 ---
 
@@ -61,7 +72,7 @@ GO2 simulation stack integrating Gazebo, CHAMP, SLAM Toolbox, Nav2, and a percep
 
 [![Repo](https://img.shields.io/badge/GitHub-TicTacToe--3link--robot-181717?style=flat&logo=github)](https://github.com/yusufdxb/TicTacToe-3link-robot)
 
-3-DOF RRP arm (2 revolute + 1 prismatic) computes closed-form planar IK to physically draw X's and O's on paper while a Minimax AI plays optimally. Controlled via MATLAB App Designer and Arduino.
+3-DOF RRP arm (2 revolute + 1 prismatic) computes closed-form planar IK to physically draw X's and O's on paper while a Minimax AI plays optimally. Controlled via MATLAB App Designer and Arduino. Also supports ROS 2 remote play and a 4-strategy AI tournament runner.
 
 `MATLAB` `Arduino` `Inverse Kinematics` `Minimax AI` `Servo Control`
 
