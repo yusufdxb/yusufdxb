@@ -89,6 +89,18 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 
 ---
 
+### 🛡️ HELIX — ROS 2 Fault Sensing Prototype
+> *Lifecycle-node fault detection middleware for robotics systems*
+
+[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
+[![CI](https://github.com/yusufdxb/helix/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yusufdxb/helix/actions/workflows/ci.yml)
+
+ROS 2 middleware for early fault detection: heartbeat monitoring, Z-score anomaly detection, and log-pattern parsing — publishing structured `FaultEvent` messages instead of raw logs. Phase 1 prototype with benchmarked throughput (46K samples/sec) and 100% TPR at all tested thresholds.
+
+`ROS 2` `Fault Detection` `Lifecycle Nodes` `Python` `System Monitoring`
+
+---
+
 ## Tech Stack
 
 <p align="center">
@@ -118,8 +130,12 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 ## GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=yusufdxb&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" height="165"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=yusufdxb&layout=compact&theme=github_dark&hide_border=true&langs_count=6" height="165"/>
+  <img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/profile-summary-card-output/github_dark/0-profile-details.svg" width="100%"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/profile-summary-card-output/github_dark/1-repos-per-language.svg" width="32%"/>
+  <img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/profile-summary-card-output/github_dark/2-most-commit-language.svg" width="32%"/>
+  <img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/profile-summary-card-output/github_dark/3-stats.svg" width="32%"/>
 </p>
 
 ---
