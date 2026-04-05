@@ -3,7 +3,6 @@
 **M.S. Robotics Engineering — Wayne State University**
 Assistive Robots · Medical Robotics · Autonomous Systems · Real Hardware
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-yusuf--guenena-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yusuf-guenena)
 [![Email](https://img.shields.io/badge/Email-yusuf.a.guenena%40gmail.com-EA4335?logo=gmail&logoColor=white)](mailto:yusuf.a.guenena@gmail.com)
 
 ---
@@ -116,4 +115,4 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 
 ## Contact
 
-[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com) · [LinkedIn](https://www.linkedin.com/in/yusuf-guenena)
+[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
