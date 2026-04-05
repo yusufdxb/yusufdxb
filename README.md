@@ -69,7 +69,7 @@ ROS 2 fault observability prototype: heartbeat monitoring, Z-score anomaly detec
 > *Physical robot arm that plays and draws TicTacToe*
 
 [![Repo](https://img.shields.io/badge/GitHub-TicTacToe--3link--robot-181717?style=flat&logo=github)](https://github.com/yusufdxb/TicTacToe-3link-robot)
-[![Demo](https://img.shields.io/badge/▶_Demo-YouTube-red?style=flat&logo=youtube)](https://www.youtube.com/watch?v=9wfI7847dPw)
+[![Demo](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=flat&logo=youtube)](https://www.youtube.com/watch?v=9wfI7847dPw)
 
 3-DOF RRP arm (2 revolute + 1 prismatic) computes closed-form planar IK to physically draw X's and O's on paper while a Minimax AI plays optimally. Controlled via MATLAB App Designer and Arduino.
 
