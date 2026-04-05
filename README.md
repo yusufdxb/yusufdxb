@@ -114,15 +114,6 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 
 ---
 
-## GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=yusufdxb&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" height="165"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=yusufdxb&layout=compact&theme=github_dark&hide_border=true&langs_count=6" height="165"/>
-</p>
-
----
-
 ## Contact
 
 [yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com) · [LinkedIn](https://www.linkedin.com/in/yusuf-guenena)
