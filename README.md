@@ -76,12 +76,6 @@ Where I started, and still the most satisfying when it physically moves.
 
 ---
 
-## 🛠️ Also: developer tooling
-
-**[vex](https://github.com/yusufdxb/vex)** routes Claude Code tasks across Opus, Sonnet, Haiku, and local Ollama models by scoring confidence, impact, and risk, because watching tokens burn on trivial edits bothered me enough to fix it.
-
----
-
 ## Tech Stack
 
 <p align="center">
