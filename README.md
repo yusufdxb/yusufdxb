@@ -1,90 +1,84 @@
 # Yusuf Guenena
 
-**M.S. Robotics Engineering — Wayne State University**
-Assistive Robots · Medical Robotics · Autonomous Systems · Real Hardware
+**Robotics engineer. I build real systems that run on real hardware.**
+
+M.S. Robotics Engineering @ Wayne State University · Assistive & autonomous robots · Sim-to-real on quadrupeds
 
 [![Email](https://img.shields.io/badge/Email-yusuf.a.guenena%40gmail.com-EA4335?logo=gmail&logoColor=white)](mailto:yusuf.a.guenena@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-yusufdxb-181717?logo=github&logoColor=white)](https://github.com/yusufdxb)
 
 ---
 
-## About Me
+Most of what I build lives on a Unitree GO2 quadruped: perception, learned control, navigation, safety, and the unglamorous reliability layer that keeps it all from falling over in the real world. I like the part of robotics where the simulation lies to you and the hardware tells the truth. A lot of my repos document the bugs I hit getting there, because that is the part nobody writes down and the part that actually matters.
 
-I'm a robotics engineer who builds **complete, functional systems** — from embedded firmware through autonomous behavior and human-robot interaction. My thesis work involves a Unitree GO2 quadruped that guides visually impaired users using audio-visual perception, which means I spend a lot of time making robots work reliably on real hardware, not just in simulation.
-
-I do the **full stack** — C++ control loops, Python perception pipelines, ROS 2 system architecture, embedded electronics, CAD, and Qt GUIs. Most of my projects have been built and validated on physical hardware.
+I work across the stack: C++ control loops, Python perception and RL, ROS 2 architecture, embedded firmware, CAD, and the GUIs on top. The list below is the stuff I am proud of, grouped by what it actually does.
 
 ---
 
-## Featured Projects
-
-### 🦮 GO2 Seeing-Eye Dog — Master's Thesis *(In Progress)*
-> *Assistive quadruped robot for visually impaired users — active research*
+## 🦮 Flagship: GO2 Seeing-Eye Dog (M.S. Thesis)
 
 [![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
-![Status](https://img.shields.io/badge/Status-Research_%26_Design_Phase-orange?style=flat)
+![Stars](https://img.shields.io/github/stars/yusufdxb/GO2-seeing-eye-dog?style=flat&color=yellow)
+![Status](https://img.shields.io/badge/Status-Active_Research-orange?style=flat)
 
-Research into reliable human-following and identity-gated navigation on the Unitree GO2 for visually impaired users. The focus is a publishable behavior set — follow me, walk with me, stop/wait, and robust reacquisition after occlusion — with comparisons against AprilTag-only, phone-only, and stock Unitree baselines.
+An assistive quadruped that guides visually impaired users using audio-visual perception. The hard part is not following a person, it is following the *right* person and reacquiring them after they disappear behind an obstacle. The system covers audio localization, visual person re-identification, intent grounding, safety monitoring, custom ROS 2 messages, and a C++ gait controller, benchmarked against AprilTag-only, phone-only, and stock Unitree baselines.
 
-Public repo includes audio perception, visual perception, intent grounding, safety monitoring, custom ROS 2 messages, and a C++ gait controller.
-
-`ROS 2` `YOLOv8` `Nav2` `Whisper ASR` `GCC-PHAT` `Unitree GO2` `Jetson Orin` `Person Re-ID`
-
----
-
-### 🏥 RADAR — Medical Telepresence Robot
-> *ROS 2 robot for remote clinical presence*
-
-[![Repo](https://img.shields.io/badge/GitHub-RADAR--Telepresence--Robot-181717?style=flat&logo=github)](https://github.com/yusufdxb/RADAR-Telepresence-Robot)
-
-Clinicians remotely navigate the robot, stream live video with pan-tilt control, and monitor patient SpO₂ and heart rate in real time — all through a single Qt 6 operator interface. Teleop, video, pan-tilt, and vitals sensing validated on hardware; Qt operator GUI implemented but not yet hardware-tested.
-
-`ROS 2` `Qt 6` `OpenCV` `MAX30102` `Raspberry Pi` `C++` `Python`
+`ROS 2` `Person Re-ID` `Whisper ASR` `GCC-PHAT` `Nav2` `Jetson Orin NX` `Unitree GO2`
 
 ---
 
-### 🤖 GO2 Nav2 + YOLOv8
-> *Autonomous object detection and navigation in Gazebo simulation*
+## 🤖 The GO2 Quadruped Stack
 
-[![Repo](https://img.shields.io/badge/GitHub-ros2--go2--nav2--yolo-181717?style=flat&logo=github)](https://github.com/yusufdxb/ros2-go2-nav2-yolo)
+A connected body of work turning a stock quadruped into something that learns, navigates, and recovers on its own.
 
-Full GO2 simulation stack integrating Gazebo Classic, CHAMP, SLAM Toolbox, Nav2, and a YOLOv8 detection-to-navigation pipeline. YOLOv8n benchmarked at 53 ms mean latency / 18.8 fps on CPU. Documents 10 non-obvious DDS/TF/SLAM integration bugs and fixes.
-
-`ROS 2` `YOLOv8` `Nav2` `CHAMP` `Gazebo` `SLAM Toolbox`
-
----
-
-### 🛡️ HELIX — ROS 2 Fault Sensing Prototype
-> *Structured fault observability for robotics systems*
-
-[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
-[![CI](https://github.com/yusufdxb/helix/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yusufdxb/helix/actions/workflows/ci.yml)
-
-ROS 2 fault observability prototype: heartbeat monitoring, Z-score anomaly detection, and log-pattern parsing — publishing structured `FaultEvent` messages instead of raw logs. Evaluated on a live Unitree GO2 graph via Jetson Orin NX in a controlled test, detecting real LiDAR rate anomalies. 96.5% TPR at Z=3.0, 1.16 ms mean end-to-end latency, 81K samples/sec on desktop.
-
-`ROS 2` `Python` `Fault Detection` `Lifecycle Nodes` `Jetson Orin NX`
+| Project | What it does |
+|---|---|
+| **[go2-phoenix](https://github.com/yusufdxb/go2-phoenix)** | Closed-loop sim-to-real locomotion learning in Isaac Lab, exported to ONNX and verified for train/deploy parity (max-abs diff 9.5e-7) before it ever touches the robot. |
+| **[ashfall](https://github.com/yusufdxb/ashfall)** | Failure-driven reinforcement learning: the robot learns from where it falls, not just where it succeeds. |
+| **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. |
+| **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths next time. |
+| **[ros2-go2-nav2-yolo](https://github.com/yusufdxb/ros2-go2-nav2-yolo)** ⭐ | Full Gazebo autonomy stack (Nav2 + SLAM Toolbox + CHAMP + YOLOv8). YOLOv8n at 53 ms / 18.8 fps on CPU, with 10 non-obvious DDS/TF/SLAM bugs documented and fixed. |
+| **[go2-audio](https://github.com/yusufdxb/go2-audio)** | The GO2's `/audiosender` DDS topic is broken, so I pulled real mic audio off the robot over WebRTC instead. |
 
 ---
 
-### ♟️ TicTacToe 3-Link Robot
-> *Physical robot arm that plays and draws TicTacToe*
+## 🛡️ Reliability & Observability for Robots
 
-[![Repo](https://img.shields.io/badge/GitHub-TicTacToe--3link--robot-181717?style=flat&logo=github)](https://github.com/yusufdxb/TicTacToe-3link-robot)
-[![Demo](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=flat&logo=youtube)](https://www.youtube.com/watch?v=9wfI7847dPw)
+The layer that tells you *when your robot is about to do something stupid* and catches it on the way down.
 
-3-DOF RRP arm (2 revolute + 1 prismatic) computes closed-form planar IK to physically draw X's and O's on paper while a Minimax AI plays optimally. Controlled via MATLAB App Designer and Arduino.
-
-`MATLAB` `Arduino` `Inverse Kinematics` `Minimax AI` `Servo Control`
+| Project | What it does |
+|---|---|
+| **[helix](https://github.com/yusufdxb/helix)** | ROS 2 fault-sensing: heartbeat monitoring, Z-score anomaly detection, log parsing, publishing structured `FaultEvent`s instead of raw logs. Caught real LiDAR rate anomalies on a live GO2 graph. 96.5% TPR, 1.16 ms latency, 81K samples/sec. |
+| **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | A flight recorder for ROS 2 robots: observability and post-failure forensics so you can actually answer "what happened" after a crash. |
+| **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime safety net for learned policies: detects when a neural controller's internals go out of distribution and intervenes before it acts on garbage. |
+| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** ⭐ | Distribution-shift teardown of openpilot's production self-driving model. The question: does an L2 driving model know when it is blind? Threshold-free OOD metrics, recurrent-state-correct reproduction, the works. |
 
 ---
 
-### ♻️ EcoSort Bin
-> *Embedded waste classifier — 97.5% accuracy, no ML required*
+## 🗺️ Perception & 3D Scene Understanding
 
-[![Repo](https://img.shields.io/badge/GitHub-EcoSort--bin-181717?style=flat&logo=github)](https://github.com/yusufdxb/EcoSort-bin)
+| Project | What it does |
+|---|---|
+| **[openvocab-tsdf](https://github.com/yusufdxb/openvocab-tsdf)** | GPU-accelerated open-vocabulary 3D mapping: build a TSDF and query it in natural language. |
+| **[go2-semantic-nav](https://github.com/yusufdxb/go2-semantic-nav)** | Open-vocab 3D semantic scene graph feeding a language-grounded Nav2 overlay, running on Jetson Orin NX. |
 
-Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 classifies waste and actuates a servo-driven sorting platform. 40-trial validation, 97.5% accuracy, ~$70 BOM.
+---
 
-`Arduino` `Sensor Fusion` `Embedded C` `Finite State Machine`
+## ⚙️ Hardware & Embedded
+
+Where I started, and still the most satisfying when it physically moves.
+
+| Project | What it does |
+|---|---|
+| **[RADAR-Telepresence-Robot](https://github.com/yusufdxb/RADAR-Telepresence-Robot)** | Medical telepresence robot: remote teleop, live video with pan-tilt, and real-time SpO₂ / heart-rate monitoring through one Qt 6 operator console. |
+| **[TicTacToe-3link-robot](https://github.com/yusufdxb/TicTacToe-3link-robot)** | A 3-DOF arm that computes closed-form IK to physically draw X's and O's while a Minimax AI plays optimally. [▶ Demo](https://www.youtube.com/watch?v=9wfI7847dPw) |
+| **[EcoSort-bin](https://github.com/yusufdxb/EcoSort-bin)** | Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino classifies and sorts waste. 97.5% accuracy over 40 trials, ~$70 BOM, zero ML. |
+
+---
+
+## 🛠️ Also: developer tooling
+
+**[vex](https://github.com/yusufdxb/vex)** routes Claude Code tasks across Opus, Sonnet, Haiku, and local Ollama models by scoring confidence, impact, and risk, because watching tokens burn on trivial edits bothered me enough to fix it.
 
 ---
 
@@ -93,27 +87,25 @@ Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino Uno R4 clas
 <p align="center">
   <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/MATLAB-E16737?style=for-the-badge&logo=mathworks&logoColor=white" />
   <img src="https://img.shields.io/badge/ROS_2-22314E?style=for-the-badge&logo=ros&logoColor=white" />
+  <img src="https://img.shields.io/badge/Isaac_Lab-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
   <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
   <img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=qt&logoColor=white" />
   <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" />
-  <img src="https://img.shields.io/badge/Raspberry_Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=white" />
   <img src="https://img.shields.io/badge/NVIDIA_Jetson-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
 </p>
 
 | Area | Technologies |
 |---|---|
-| **Robotics** | ROS 2, Nav2, Gazebo, RViz, tf2, ros2_control, SLAM Toolbox, MoveIt |
-| **Perception** | YOLOv8, OpenCV, Intel RealSense D435i, GCC-PHAT audio localization |
-| **AI / Speech** | OpenAI Whisper, Minimax, Multimodal intent grounding |
-| **Embedded** | Arduino, Raspberry Pi, NVIDIA Jetson Orin, sensor/actuator integration |
+| **Robotics** | ROS 2, Nav2, SLAM Toolbox, ros2_control, tf2, Gazebo, Isaac Lab, MoveIt |
+| **Learning** | PyTorch, reinforcement learning, sim-to-real, ONNX, out-of-distribution detection |
+| **Perception** | YOLOv8, OpenCV, RealSense D435i, person re-ID, GCC-PHAT, open-vocab 3D mapping |
+| **Embedded** | Jetson Orin NX, Arduino, Raspberry Pi, sensor/actuator integration, firmware |
 | **Languages** | C++17, Python 3, MATLAB, C |
-| **Tools** | Git, Qt 6, Fusion 360, Docker, CMake |
+| **Tools** | Git, Docker, CMake, Qt 6, Fusion 360 |
 
 ---
 
-## Contact
-
-[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
+📫 [yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
