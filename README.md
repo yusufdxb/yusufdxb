@@ -38,7 +38,6 @@ A connected body of work turning a stock quadruped into something that learns, n
 | **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. |
 | **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths next time. |
 | **[ros2-go2-nav2-yolo](https://github.com/yusufdxb/ros2-go2-nav2-yolo)** ⭐ | Full Gazebo autonomy stack (Nav2 + SLAM Toolbox + CHAMP + YOLOv8). YOLOv8n at 53 ms / 18.8 fps on CPU, with 10 non-obvious DDS/TF/SLAM bugs documented and fixed. |
-| **[go2-audio](https://github.com/yusufdxb/go2-audio)** | The GO2's `/audiosender` DDS topic is broken, so I pulled real mic audio off the robot over WebRTC instead. |
 
 ---
 
