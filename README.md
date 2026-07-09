@@ -15,7 +15,7 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 
 ---
 
-## 🦮 Flagship: GO2 Seeing-Eye Dog (M.S. Thesis)
+## Flagship: GO2 Seeing-Eye Dog (M.S. Thesis)
 
 [![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
 ![Stars](https://img.shields.io/github/stars/yusufdxb/GO2-seeing-eye-dog?style=flat&color=yellow)
@@ -27,7 +27,7 @@ An assistive quadruped that guides visually impaired users using audio-visual pe
 
 ---
 
-## 🤖 The GO2 Quadruped Stack
+## The GO2 Quadruped Stack
 
 A connected body of work turning a stock quadruped into something that learns, navigates, and recovers on its own.
 
@@ -37,11 +37,11 @@ A connected body of work turning a stock quadruped into something that learns, n
 | **[ashfall](https://github.com/yusufdxb/ashfall)** | Failure-driven reinforcement learning: the robot learns from where it falls, not just where it succeeds. |
 | **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. |
 | **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths next time. |
-| **[ros2-go2-nav2-yolo](https://github.com/yusufdxb/ros2-go2-nav2-yolo)** ⭐ | Full Gazebo autonomy stack (Nav2 + SLAM Toolbox + CHAMP + YOLOv8). YOLOv8n at 53 ms / 18.8 fps on CPU, with 10 non-obvious DDS/TF/SLAM bugs documented and fixed. |
+| **[ros2-go2-nav2-yolo](https://github.com/yusufdxb/ros2-go2-nav2-yolo)** | Full Gazebo autonomy stack (Nav2 + SLAM Toolbox + CHAMP + YOLOv8). YOLOv8n at 53 ms / 18.8 fps on CPU, with 10 non-obvious DDS/TF/SLAM bugs documented and fixed. |
 
 ---
 
-## 🛡️ Reliability & Observability for Robots
+## Reliability & Observability for Robots
 
 The layer that tells you *when your robot is about to do something stupid* and catches it on the way down.
 
@@ -50,11 +50,11 @@ The layer that tells you *when your robot is about to do something stupid* and c
 | **[helix](https://github.com/yusufdxb/helix)** | ROS 2 fault-sensing: heartbeat monitoring, Z-score anomaly detection, log parsing, publishing structured `FaultEvent`s instead of raw logs. Caught real LiDAR rate anomalies on a live GO2 graph. 96.5% TPR, 1.16 ms latency, 81K samples/sec. |
 | **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | A flight recorder for ROS 2 robots: observability and post-failure forensics so you can actually answer "what happened" after a crash. |
 | **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime safety net for learned policies: detects when a neural controller's internals go out of distribution and intervenes before it acts on garbage. |
-| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** ⭐ | Distribution-shift teardown of openpilot's production self-driving model. The question: does an L2 driving model know when it is blind? Threshold-free OOD metrics, recurrent-state-correct reproduction, the works. |
+| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** | Distribution-shift teardown of openpilot's production self-driving model. The question: does an L2 driving model know when it is blind? Threshold-free OOD metrics, recurrent-state-correct reproduction, the works. |
 
 ---
 
-## 🗺️ Perception & 3D Scene Understanding
+## Perception & 3D Scene Understanding
 
 | Project | What it does |
 |---|---|
@@ -63,7 +63,7 @@ The layer that tells you *when your robot is about to do something stupid* and c
 
 ---
 
-## ⚙️ Hardware & Embedded
+## Hardware & Embedded
 
 Where I started, and still the most satisfying when it physically moves.
 
@@ -101,4 +101,4 @@ Where I started, and still the most satisfying when it physically moves.
 
 ---
 
-📫 [yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
+[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
