@@ -13,18 +13,11 @@ Learned policies fail quietly. A locomotion network saturates, a perception mode
 
 I work across the stack: C++ control loops, Python perception and RL, ROS 2 architecture, embedded firmware, CAD, and the GUIs on top. Most of it runs on a Unitree GO2. Every repo below states what has actually run on hardware and what has not, because that distinction is the whole job.
 
-<p align="center">
-  <a href="https://youtu.be/PbKXB91-NSY"><img src="https://img.youtube.com/vi/PbKXB91-NSY/mqdefault.jpg" width="250"></a>
-  <a href="https://youtu.be/Nu0oWyJJbEM"><img src="https://img.youtube.com/vi/Nu0oWyJJbEM/mqdefault.jpg" width="250"></a>
-  <a href="https://youtu.be/tnM18XGbNMY"><img src="https://img.youtube.com/vi/tnM18XGbNMY/mqdefault.jpg" width="250"></a>
-</p>
-<p align="center">
-  <em>HELIX self-healing on a live GO2 · Phoenix sim-to-real · a production driving model going blind</em>
-</p>
-
 ---
 
-## Flagship: HELIX
+## Featured Work
+
+### helix
 
 [![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
 ![Stars](https://img.shields.io/github/stars/yusufdxb/helix?style=flat&color=yellow)
@@ -38,10 +31,6 @@ Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab ses
 > **Open limitation:** `/helix/cmd_vel` currently has no downstream subscribers, so `STOP_AND_HOLD` is a void publish. Closing the recovery loop physically, through a `twist_mux` fallback, is the next hardware task.
 
 `ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
-
----
-
-## Featured Work
 
 ### go2-phoenix
 
@@ -80,20 +69,6 @@ A distribution-shift teardown of the neural network that drives openpilot, an L2
 Silently. The study rests on a parity-controlled reimplementation of v0.9.7 inference that agrees with comma's own reference output on 100% of 1159 real frames within ±0.5 m/s², so the negative result is attributable to the model and not the harness. Under shift, 8 of 10 tracked output readouts go near-constant, the recurrent state contracts to a point, and the exported uncertainty heads never leave their nominal real-driving range. An internal recurrent signal does encode the failure and is recoverable, but the model never exposes it. Writeup drafted, not submitted.
 
 `ONNX Runtime` `CARLA` `OOD Detection` `Recurrent State` `openpilot`
-
-### BlackBoxRS
-
-[![Repo](https://img.shields.io/badge/GitHub-BlackBoxRS-181717?style=flat&logo=github)](https://github.com/yusufdxb/BlackBoxRS)
-![Stars](https://img.shields.io/github/stars/yusufdxb/BlackBoxRS?style=flat&color=yellow)
-![Status](https://img.shields.io/badge/Status-Real_GO2_bag_replay-brightgreen?style=flat)
-
-Incident intelligence for ROS 2 robots. A daemon watches the graph and host; when a failure fires, one command builds a reproducible incident bundle: a timeline, raw evidence, config and version signatures, a likely-cause narrative where every claim links to the evidence file backing it, and a prevention rule you can adopt so the same failure blocks the next launch.
-
-The offline replay path runs against a genuine `rosbag2` recording from a physical GO2 (about 94k messages over 330 seconds). Played untouched it replays clean with zero anomalies, which is the point: the detectors are not inventing failures. Inject a pose dropout into that real window and the detector finds it from bag timing alone.
-
-> **Honest boundary:** this has not run in a closed control loop on a live robot. A live onboard capture during a real field failure is the one thing still owed.
-
-`ROS 2` `rosbag2` `Python` `Incident Forensics` `CLI`
 
 ---
 
@@ -135,7 +110,7 @@ The layer that tells you *when your robot is about to do something stupid* and c
 | Project | What it does | Status |
 |---|---|---|
 | **[helix](https://github.com/yusufdxb/helix)** | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
-| **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: incident bundles you can read. | real GO2 bag replay |
+| **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | real GO2 bag replay, not a live loop |
 | **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime OOD detection on a learned policy's internals, arbitrated into one health status with a safe-fallback layer. C++ managed-lifecycle node. | 295 tests, synthetic only |
 | **[ivf](https://github.com/yusufdxb/ivf)** | Sealed, re-verifiable acceptance evidence for simulator experiments. | `0.1.0rc2` |
 
