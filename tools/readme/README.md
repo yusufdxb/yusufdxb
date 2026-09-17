@@ -1,44 +1,66 @@
 # README asset generation
 
-Every image on the profile is generated here. Nothing is fetched from a
-third-party stats or badge service at render time.
+The hero is a particle rendering of the **real** Unitree GO2 surface geometry,
+not a model of one. Nothing here approximates the robot from dimensions.
 
 ```
-style.py              palette, type scale, drawing helpers
-go2_model.py          3D GO2 EDU geometry, surface sampling, camera
-render_hero.py        one hero frame at a given point in the scan loop
-build_hero.py         hero.gif + hero.png
-render_system_map.py  system-map.png
-render_activity.py    activity.png + activity.json, from the GitHub API
-fonts/                DejaVu Sans Mono, vendored so CI renders identically
+go2_asset.py        assembles the go2_description visual meshes with the URDF
+                    joint transforms into one posed, world-space mesh
+gorender.py         area-weighted surface sampling, camera, splatting, shading
+particles.py        the particle treatment: which samples are drawn, how dark,
+                    how large, per theme
+build_hero.py       the reconstruction loop -> assets/readme/hero-{light,dark}.webp
+render_activity.py  real contribution data -> the sparkline and the one
+                    sentence of numbers in README.md
 ```
 
-## Regenerate
+## Where the geometry comes from
+
+`go2_asset.py` loads the meshes the GO2 URDF `<visual>` blocks point at
+(`base.dae`, `hip.dae`, `thigh.dae`, `thigh_mirror.dae`, `calf.dae`,
+`calf_mirror.dae`, `foot.dae`), applies the URDF joint origins and a standing
+stance, and concatenates them into a single world-space mesh of about 399k
+triangles. The assembled robot measures 0.70 x 0.34 x 0.42 m against Unitree's
+published GO2 standing dimensions of 70 x 31 x 40 cm.
+
+Those meshes are Unitree's and are not vendored here. Point `GO2_DAE` at a
+local `go2_description/dae` to rebuild:
 
 ```bash
-python -m pip install "pillow>=10" "numpy>=1.26"
-
-python tools/readme/build_hero.py          # hero.gif, hero.png
-python tools/readme/render_system_map.py   # system-map.png
-python tools/readme/render_activity.py     # activity.png, activity.json
+python -m pip install "pillow>=10" "numpy>=1.26" trimesh pycollada
+GO2_DAE=/path/to/go2_description/dae python tools/readme/go2_asset.py
+python tools/readme/build_hero.py --recache
 ```
 
-The hero also uses Inter for the wordmark. If Inter is not installed the
-script falls back to whatever the path resolves to, so build the hero on a
-machine that has it. The hero is never rebuilt in CI.
+`go2_asset.py` writes `go2_posed.npz`, which is gitignored: it is a derived
+artifact of someone else's mesh, and it is large.
+
+## Sampling
+
+Particles are drawn with area-weighted barycentric sampling across triangle
+surfaces, never from vertices, so mesh topology never shows through as banding.
+Density and weight follow the shaded tone of the real surface and the
+silhouette, the way an engraving does, rather than coating the robot evenly.
+Samples on the far side of the shell survive only where they land on a back
+contour; kept evenly they paint a flat haze over the body instead of reading as
+volume.
+
+## The loop
+
+The geometry never changes. Each particle gets a reveal rank from a smooth
+spatial field, and the animation only slides a threshold across those ranks, so
+the robot dissolves and rebuilds without deforming. Frame 0 is the fully
+resolved robot, so any context that shows a single frame shows the finished
+image. Both themes draw on full transparency, so the robot sits on the GitHub
+page rather than inside a panel.
+
+## Activity
 
 `render_activity.py` needs a GitHub token in `README_TOKEN`, `GH_TOKEN` or
 `GITHUB_TOKEN`, and otherwise falls back to `gh auth token`. It writes the raw
-API response to `assets/readme/activity.json` next to the image, so any number
-on the panel can be checked against its source. If the fetch fails it exits
-non-zero rather than drawing a stale or invented figure.
-
-`.github/workflows/readme-activity.yml` runs the activity script daily and
-commits the result only when it changes.
-
-## The hero loop
-
-The loop opens on the fully acquired frame and holds there for about two
-seconds, then dims to raw return, sweeps a scan front left to right, and
-settles the telemetry back in. That ordering is deliberate: anything that shows
-only the first frame of the GIF shows the finished image.
+API response to `assets/readme/activity.json` next to the sparkline, so any
+number can be checked against its source, and rewrites the sentence between the
+`<!--activity-->` markers in README.md. If the fetch fails it exits non-zero
+rather than drawing a stale or invented figure.
+`.github/workflows/readme-activity.yml` runs it daily and commits only on a
+change.

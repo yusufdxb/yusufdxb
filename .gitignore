@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+tools/readme/.frames_*.pkl
+tools/readme/go2_posed.npz
