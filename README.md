@@ -1,183 +1,189 @@
-# Yusuf Guenena
+<div align="center">
 
-**I build the reliability layer for learned robot systems.**
+<img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/hero.gif" width="900" alt="LiDAR-style point cloud reconstruction of a Unitree GO2 EDU quadruped, with a telemetry panel listing compute, middleware, simulation and navigation stack. Yusuf Guenena, robotics, embodied AI, autonomy.">
 
-M.S. Robotics Engineering @ Wayne State University · Runtime safety for learned policies · Sim-to-real on quadrupeds
+</div>
 
-[![Email](https://img.shields.io/badge/Email-yusuf.a.guenena%40gmail.com-EA4335?logo=gmail&logoColor=white)](mailto:yusuf.a.guenena@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-yusufdxb-181717?logo=github&logoColor=white)](https://github.com/yusufdxb)
+<br>
 
----
+### <samp>02 &nbsp;//&nbsp; CURRENT MISSION</samp>
 
-Learned policies fail quietly. A locomotion network saturates, a perception model stops perceiving, a simulator's counterfactual stops being faithful, and nothing in the stack raises its hand. Most of what I build is the layer that notices: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence you can re-verify a year later.
+**Reliable autonomy for quadruped robots working around people.**
 
-I work across the stack: C++ control loops, Python perception and RL, ROS 2 architecture, embedded firmware, CAD, and the GUIs on top. Most of it runs on a Unitree GO2. Every repo below states what has actually run on hardware and what has not, because that distinction is the whole job.
+Learned policies fail quietly. A locomotion network saturates, a perception model stops perceiving, a simulator's counterfactual stops being faithful, and nothing in the stack raises its hand. Most of what I build is the layer that notices: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence that can be re-verified a year later.
 
----
-
-## Featured Work
-
-### helix
-
-[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
-![Stars](https://img.shields.io/github/stars/yusufdxb/helix?style=flat&color=yellow)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
-![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
-
-A self-healing runtime for ROS 2 robots, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. Hot-path sensing nodes are being ported from Python to C++ so HELIX can share a Jetson with Nav2 and perception instead of competing with them.
-
-Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: 30 anomalies into 14 recovery hints into 14 recovery actions.
-
-> **Open limitation:** `/helix/cmd_vel` currently has no downstream subscribers, so `STOP_AND_HOLD` is a void publish. Closing the recovery loop physically, through a `twist_mux` fallback, is the next hardware task.
-
-`ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
-
-### go2-phoenix
-
-[![Repo](https://img.shields.io/badge/GitHub-go2--phoenix-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-phoenix)
-![Stars](https://img.shields.io/github/stars/yusufdxb/go2-phoenix?style=flat&color=yellow)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Nu0oWyJJbEM)
-![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
-
-Closed-loop sim-to-real learning for the GO2. A locomotion policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson.
-
-> **Where it stands:** on-robot locomotion validation (Gate 7) is open. An export audit found pre-audit checkpoints silently dropped observation normalization, so every checkpoint owes a re-export and a fresh parity check before the retry. The adaptation loop has not yet closed once on real failure data. [`EVIDENCE.md`](https://github.com/yusufdxb/go2-phoenix/blob/main/EVIDENCE.md) is the verified / inferred / not-validated ledger.
-
-`Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
-
-### ivf
-
-[![Repo](https://img.shields.io/badge/GitHub-ivf-181717?style=flat&logo=github)](https://github.com/yusufdxb/ivf)
-![Stars](https://img.shields.io/github/stars/yusufdxb/ivf?style=flat&color=yellow)
-![Status](https://img.shields.io/badge/Status-0.1.0rc2-blue?style=flat)
-
-Offline acceptance and evidence for simulator experiments. You declare what "unchanged behavior" means in a YAML file (which signals, which tolerances and units, which controls must hold, what the minimum sample is). IVF checks the experiment was even valid before letting any result decide a verdict, then seals the manifest, signals, reasoning, provenance, and per-file SHA-256 digests into one auditable bundle.
-
-The flagship case is a real PhysX versus Newton/MJWarp cart-pole comparison whose recorded verdict is `FAIL`, with 22 validity checks (18 pass, 3 unverifiable, 1 not applicable, 0 failed). Anyone can re-verify the shipped bundle from its seal, CPU only, with no GPU and no simulator install. IVF is not a benchmark: it does not measure throughput and does not designate a reference engine.
-
-`Python` `Isaac Lab` `PhysX` `Newton / MJWarp` `SHA-256 provenance` `CLI`
-
-### supercombo-blindspot
-
-[![Repo](https://img.shields.io/badge/GitHub-supercombo--blindspot-181717?style=flat&logo=github)](https://github.com/yusufdxb/supercombo-blindspot)
-![Stars](https://img.shields.io/github/stars/yusufdxb/supercombo-blindspot?style=flat&color=yellow)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/tnM18XGbNMY)
-![Status](https://img.shields.io/badge/Status-Study_complete-brightgreen?style=flat)
-
-A distribution-shift teardown of the neural network that drives openpilot, an L2 driver-assistance system deployed on public roads. One question: presented with input outside its training distribution, does it fail conspicuously or silently?
-
-Silently. The study rests on a parity-controlled reimplementation of v0.9.7 inference that agrees with comma's own reference output on 100% of 1159 real frames within ±0.5 m/s², so the negative result is attributable to the model and not the harness. Under shift, 8 of 10 tracked output readouts go near-constant, the recurrent state contracts to a point, and the exported uncertainty heads never leave their nominal real-driving range. An internal recurrent signal does encode the failure and is recoverable, but the model never exposes it. Writeup drafted, not submitted.
-
-`ONNX Runtime` `CARLA` `OOD Detection` `Recurrent State` `openpilot`
+The work runs on a Unitree GO2 EDU with a Jetson Orin NX. Every repository below states what has actually run on hardware and what has not, because that distinction is the whole job.
 
 ---
 
-## Active M.S. Research
+### <samp>03 &nbsp;//&nbsp; FLAGSHIP SYSTEMS</samp>
 
-### GO2 Seeing-Eye Dog
+#### <samp>helix &nbsp;·&nbsp; SELF-HEALING ROS 2 RUNTIME</samp>
 
-[![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
-![Stars](https://img.shields.io/github/stars/yusufdxb/GO2-seeing-eye-dog?style=flat&color=yellow)
-![Status](https://img.shields.io/badge/Status-Active_Research-orange?style=flat)
+A four-tier loop on a live ROS 2 graph. Lifecycle nodes emit structured fault events from a rolling Z-score detector, a heartbeat monitor and a log parser. Deterministic rules turn those into recovery hints. One publisher behind a strict allowlist and a cooldown owns the response. An advisory local LLM explains it afterwards, never on the safety-critical path.
 
-A guide dog has to be summonable. If the handler puts the harness down, sits on a bench, and then wants the dog back, the dog finds them by voice, not by an app or a joystick. This repository closes the **recall** half of that interaction on real hardware: a four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and publishes a Nav2 goal.
+```
+STACK      ROS 2 Humble · C++17 · lifecycle nodes · Orin NX
+SENSE      VERIFIED  8 live GO2 lab sessions, April 2026
+DIAGNOSE   VERIFIED  session 8: 30 anomalies, 14 hints, 14 actions
+RECOVER    OPEN      /helix/cmd_vel has no subscriber yet
+C++ PORT   PARTIAL   -56% RSS, -60% CPU, gated off by default
+```
 
-> **Scope, stated plainly:** this recalls the robot, it does not guide the user anywhere. Safety alerts are advisory and do not hard-gate motion. 32 unit tests pass, and nothing here has a measured accuracy or latency result on the real robot yet. End-to-end recall on hardware is the open item.
+[**Open helix**](https://github.com/yusufdxb/helix) &nbsp;·&nbsp; [demo video](https://youtu.be/PbKXB91-NSY) &nbsp;·&nbsp; [status table](https://github.com/yusufdxb/helix#status)
 
-`ROS 2 Humble` `GCC-PHAT` `Whisper ASR` `YOLOv8` `RealSense D435i` `Nav2` `C++ Lifecycle Node`
+#### <samp>go2-phoenix &nbsp;·&nbsp; SIM-TO-REAL LOCOMOTION RELIABILITY</samp>
+
+Isaac Lab to ONNX to ROS 2 to GO2, closed. A locomotion policy trains in simulation and exports through a torch/onnxruntime parity gate that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a fail-closed safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomised physics.
+
+```
+STACK      Isaac Lab · PPO · ONNX · ROS 2 · Orin NX
+SIM        VERIFIED  stand-v3-h25: 32/32 success, 3.30% slew
+POLICY     VERIFIED  parity gate blocks a drifting export
+SAFETY     VERIFIED  fail-closed, shared slew cap on deploy
+HARDWARE   OPEN      Gate 7 on-robot locomotion not yet passed
+LOOP       OPEN      no hardware failure capture has fed it yet
+```
+
+[**Open go2-phoenix**](https://github.com/yusufdxb/go2-phoenix) &nbsp;·&nbsp; [demo video](https://youtu.be/Nu0oWyJJbEM) &nbsp;·&nbsp; [EVIDENCE.md](https://github.com/yusufdxb/go2-phoenix/blob/main/EVIDENCE.md)
+
+#### <samp>GO2-seeing-eye-dog &nbsp;·&nbsp; VOICE RECALL FOR AN ASSISTIVE QUADRUPED</samp>
+
+A guide dog has to be summonable. Put the harness down, sit on a bench, call the dog back: by voice, not by an app. A four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and a Nav2 goal is published.
+
+```
+STACK      ROS 2 Humble · GCC-PHAT · Whisper · YOLOv8 · D435i
+SCOPE      recall only. It does not guide the user anywhere
+SAFETY     alerts are advisory. They do not hard-gate motion
+TESTS      VERIFIED  32 unit tests pass
+HARDWARE   OPEN      end-to-end recall on the robot is pending
+MEASURED   nothing yet. Quoted values are defaults, not results
+```
+
+[**Open GO2-seeing-eye-dog**](https://github.com/yusufdxb/GO2-seeing-eye-dog)
+
+#### <samp>policy-health-monitor &nbsp;·&nbsp; RUNTIME OOD ON POLICY INTERNALS</samp>
+
+Watch a learned policy's own internal activations rather than its outputs, run several detectors over them, and arbitrate worst-wins into a single health status with a safe-fallback layer underneath. Written as a C++ managed lifecycle node so it can be brought up and torn down with the rest of the graph.
+
+```
+STACK      ROS 2 · C++ managed lifecycle · worst-wins arbiter
+TESTS      VERIFIED  295 pass, no ROS install required
+DETECTORS  synthetic streams only, not yet a real policy
+HARDWARE   OPEN      on-device latency and FPR not measured
+```
+
+[**Open policy-health-monitor**](https://github.com/yusufdxb/policy-health-monitor)
+
+#### <samp>BlackBoxRS &nbsp;·&nbsp; FLIGHT RECORDER AND FAILURE FORENSICS</samp>
+
+A daemon watches the ROS 2 graph and the host. When a failure fires, one command builds a reproducible incident bundle: a timeline, the raw evidence, config and version signatures, a likely-cause narrative grounded in that evidence, and a preflight rule you can adopt so the same failure blocks the next launch instead of recurring on another robot two weeks later.
+
+```
+STACK      ROS 2 Humble · Python 3.10-3.12 · Docker CI
+TESTS      VERIFIED  547 pass, 2 gated skips
+EVIDENCE   VERIFIED  incident bundle built from a real GO2 bag
+LIVE       OPEN      offline replay, not yet an onboard capture
+```
+
+[**Open BlackBoxRS**](https://github.com/yusufdxb/BlackBoxRS)
+
+#### <samp>supercombo-blindspot &nbsp;·&nbsp; DOES A SHIPPED DRIVING MODEL KNOW IT IS BLIND</samp>
+
+A distribution-shift teardown of the neural network that drives openpilot, an L2 driver-assistance system deployed on public roads. One question: presented with input outside its training distribution, does it fail conspicuously or silently? An internal recurrent signal does encode the failure and is recoverable. The model never exposes it.
+
+```
+ANSWER     silently
+PARITY     VERIFIED  100% of 1159 frames within ±0.5 m/s²
+COLLAPSE   VERIFIED  8/10 tracked readouts fall below 1% of real
+BLINDNESS  VERIFIED  0/219 shifted frames exceed the real p95
+REPLICATED on v0.9.6, which fails differently: not a freeze but
+           chaotic amplification, and the monitor does not carry
+WRITEUP    drafted, not submitted
+```
+
+[**Open supercombo-blindspot**](https://github.com/yusufdxb/supercombo-blindspot) &nbsp;·&nbsp; [demo video](https://youtu.be/tnM18XGbNMY)
 
 ---
 
-## The GO2 Quadruped Stack
+<div align="center">
 
-A connected body of work turning a stock quadruped into something that learns, navigates, and recovers on its own.
+<img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/system-map.png" width="900" alt="System map: six layers from perception down through reasoning, planning, safety, control and the GO2 platform, with the repository that owns each layer, and a reliability return path from the platform back up to the safety layer.">
 
-| Project | What it does | Status |
+</div>
+
+#### <samp>MORE SYSTEMS ON THE SAME STACK</samp>
+
+| Repository | What it does | Where it stands |
 |---|---|---|
-| **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths through an explainable Nav2 overlay. | hardware-unverified |
-| **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | |
-| **[go2-audio](https://github.com/yusufdxb/go2-audio)** | Real microphone audio off a GO2 over WebRTC, because the DDS `/audiosender` topic is broken. | |
-| **[go2_omniverse](https://github.com/yusufdxb/go2_omniverse)** | Isaac Sim 5.0 / ROS 2 Jazzy port (merged upstream) plus an IMU-driven digital-twin mode mirroring a real GO2. | upstream #84 |
-| **[ros2-go2-nav2-yolo](https://github.com/yusufdxb/ros2-go2-nav2-yolo)** | Full Gazebo autonomy stack (Nav2 + SLAM Toolbox + CHAMP + YOLOv8), with the non-obvious DDS/TF/SLAM integration bugs documented and fixed. | |
-| **[go2-jetson-setup-guide](https://github.com/yusufdxb/go2-jetson-setup-guide)** | Bringing up a Jetson on a GO2: first boot, SSH, networking, internet sharing, ROS 2 bootstrap. | |
+| [**ivf**](https://github.com/yusufdxb/ivf) | Sealed, re-verifiable acceptance evidence for simulator experiments. Its flagship bundle records `FAIL` on a real PhysX versus Newton cart-pole, over 22 validity checks: 18 pass, 3 unverifiable, 1 not applicable, 0 failed | 265 tests pass |
+| [**riskgraph-go2**](https://github.com/yusufdxb/riskgraph-go2) | Route-risk memory and explainable safer-route scoring for Nav2 | 111 tests, hardware-unverified |
+| [**go2-semantic-nav**](https://github.com/yusufdxb/go2-semantic-nav) | Open-vocabulary 3D scene graph driving a language-grounded Nav2 overlay | on-robot eval pending |
+| [**come-here**](https://github.com/yusufdxb/come-here) | Hears "come here", localises the voice, turns, walks to the person | hear and rotate on hardware |
+| [**openvocab-tsdf**](https://github.com/yusufdxb/openvocab-tsdf) | GPU open-vocabulary 3D mapping, queried in natural language | library |
+| [**go2_omniverse**](https://github.com/yusufdxb/go2_omniverse) | Isaac Sim 5.0 and ROS 2 Jazzy port, plus an IMU-driven digital twin | [merged upstream as #84](https://github.com/abizovnuralem/go2_omniverse/pull/84) |
+| [**physx-newton-bench**](https://github.com/yusufdxb/physx-newton-bench) | PhysX versus Newton/MJWarp in Isaac Lab: throughput, VRAM, 10-seed curves | complete |
+| [**ros2-go2-nav2-yolo**](https://github.com/yusufdxb/ros2-go2-nav2-yolo) | Gazebo autonomy stack with the DDS, TF and SLAM integration bugs fixed | sim, plus a real YOLO path |
+| [**go2-audio**](https://github.com/yusufdxb/go2-audio) | Real microphone audio off a GO2 over WebRTC, because the DDS topic is broken | tool |
+| [**inspectnet-cx**](https://github.com/yusufdxb/inspectnet-cx) | Reproducible industrial anomaly-inspection scaffold on an MVTec AD baseline | study |
+
+**Earlier hardware.** [RADAR-Telepresence-Robot](https://github.com/yusufdxb/RADAR-Telepresence-Robot), medical telepresence with teleop, pan-tilt video and live SpO₂ in one Qt 6 console &nbsp;·&nbsp; [TicTacToe-3link-robot](https://github.com/yusufdxb/TicTacToe-3link-robot), a 3-DOF arm solving closed-form IK against a minimax opponent &nbsp;·&nbsp; [EcoSort-bin](https://github.com/yusufdxb/EcoSort-bin), weight, colour, IR and ultrasonic fusion on an Arduino &nbsp;·&nbsp; [go2-jetson-setup-guide](https://github.com/yusufdxb/go2-jetson-setup-guide), bringing a Jetson up on a GO2 start to finish
 
 ---
 
-## Reliability & Observability for Robots
+### <samp>05 &nbsp;//&nbsp; RESEARCH</samp>
 
-The layer that tells you *when your robot is about to do something stupid* and catches it on the way down.
+```
+PUBLISHED    none yet
+IN REVIEW    none. Nothing here is under submission
 
-| Project | What it does | Status |
-|---|---|---|
-| **[helix](https://github.com/yusufdxb/helix)** | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
-| **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | real GO2 bag replay, not a live loop |
-| **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime OOD detection on a learned policy's internals, arbitrated into one health status with a safe-fallback layer. C++ managed-lifecycle node. | 295 tests, synthetic only |
-| **[ivf](https://github.com/yusufdxb/ivf)** | Sealed, re-verifiable acceptance evidence for simulator experiments. | `0.1.0rc2` |
+IN DEVELOPMENT
+  M.S. thesis           assistive quadruped autonomy,
+                        private until defense
+  supercombo-blindspot  teardown written up, not submitted
 
----
+ARCHIVED NULL RESULTS   public, with the evidence trail
+  ipfd      Rewind a simulator, re-run, treat the branch as
+            what the episode would have done. The
+            preregistered control needed a 50% cut in
+            disagreement and delivered 38.9%, so the
+            stopping rule fired
+  ashfall   Fine-tune a locomotion policy on its own
+            failures. One seed suggested +5.1 pp. Paired
+            across 11 seeds with an exact sign-flip
+            permutation test, the effect is null
 
-## Perception, Evaluation & 3D Scene Understanding
+MERGED UPSTREAM
+  go2_omniverse #84     Ubuntu 24.04 / Isaac Sim 5.0 / Jazzy
+```
 
-| Project | What it does | Status |
-|---|---|---|
-| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** | Does a production L2 driving model know when it is blind? | writeup drafted |
-| **[openvocab-tsdf](https://github.com/yusufdxb/openvocab-tsdf)** | GPU-accelerated open-vocabulary 3D mapping: build a TSDF and query it in natural language. | |
-| **[go2-semantic-nav](https://github.com/yusufdxb/go2-semantic-nav)** | Open-vocab 3D semantic scene graph feeding a language-grounded Nav2 overlay on a Jetson. | |
-| **[physx-newton-bench](https://github.com/yusufdxb/physx-newton-bench)** | PhysX vs Newton/MJWarp in Isaac Lab: throughput scaling, per-process VRAM, 10-seed learning curves. | published |
-| **[inspectnet-cx](https://github.com/yusufdxb/inspectnet-cx)** | Reproducible industrial anomaly-inspection scaffold on an MVTec AD baseline. | |
-
----
-
-## Falsified Hypotheses
-
-Two projects exist because the idea did not survive contact with measurement. Both stay public with their full evidence trail, because the measurement is the contribution.
-
-| Project | The hypothesis | What happened |
-|---|---|---|
-| **[ipfd](https://github.com/yusufdxb/ipfd)** | Rewind a simulator to step `t`, re-run it, and treat that branch as what the uninterrupted episode would have done. | Branches matching the reference on exposed simulator state, on the immediate observation, *and* on the exact replayed action sequence still reached different terminal outcomes. The preregistered positive control needed to cut disagreement by 50% and cut it by 38.9%, so the stopping rule fired. Archived negative result. |
-| **[ashfall](https://github.com/yusufdxb/ashfall)** | Fine-tuning a locomotion policy on a curriculum of its own failures improves robustness. | One seed suggested a +5.1 pp lift. Paired across 11 seeds with an exact sign-flip permutation test, the effect vanishes, and adding seeds moved the p-value *away* from significance. The null holds on both terrains. What survives: a 6-mode failure detector at 18/18 with zero cross-fires, the paired evaluation framework, and a seed-propagation bug fixed upstream. |
+Both null results stay public because the measurement is the contribution. [ipfd](https://github.com/yusufdxb/ipfd) &nbsp;·&nbsp; [ashfall](https://github.com/yusufdxb/ashfall)
 
 ---
 
-## Hardware & Embedded
+### <samp>06 &nbsp;//&nbsp; STACK</samp>
 
-Where I started, and still the most satisfying when it physically moves.
-
-| Project | What it does |
+| Area | Tools |
 |---|---|
-| **[RADAR-Telepresence-Robot](https://github.com/yusufdxb/RADAR-Telepresence-Robot)** | Medical telepresence robot: remote teleop, live video with pan-tilt, and real-time SpO₂ / heart-rate monitoring through one Qt 6 operator console. |
-| **[TicTacToe-3link-robot](https://github.com/yusufdxb/TicTacToe-3link-robot)** | A 3-DOF arm that computes closed-form IK to physically draw X's and O's while a Minimax AI plays optimally. |
-| **[EcoSort-bin](https://github.com/yusufdxb/EcoSort-bin)** | Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino classifies and sorts waste. Finite-state control, no ML. |
+| **ROBOTICS** | ROS 2 Humble · Nav2 · lifecycle nodes · tf2 · ros2_control · SLAM Toolbox · RTAB-Map · Gazebo · Isaac Sim · Isaac Lab |
+| **LEARNING** | PyTorch · PPO and reinforcement learning · sim-to-real · ONNX with parity gating · out-of-distribution detection · VLMs |
+| **PERCEPTION** | YOLOv8 · OpenCV · RealSense D435i · Whisper ASR · GCC-PHAT · open-vocabulary 3D mapping |
+| **RELIABILITY** | fault detection and recovery · incident forensics · fail-closed envelopes · acceptance evidence · paired statistical evaluation |
+| **SYSTEMS** | C++17 · Python 3 · MATLAB · Linux · Docker · CMake · colcon · Qt 6 |
+| **HARDWARE** | Unitree GO2 EDU · Jetson Orin NX · Arduino · Raspberry Pi · Fusion 360 |
 
 ---
 
-## Tech Stack
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/ROS_2-22314E?style=for-the-badge&logo=ros&logoColor=white" />
-  <img src="https://img.shields.io/badge/Isaac_Lab-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
-  <img src="https://img.shields.io/badge/ONNX-005CED?style=for-the-badge&logo=onnx&logoColor=white" />
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
-  <img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=qt&logoColor=white" />
-  <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" />
-  <img src="https://img.shields.io/badge/NVIDIA_Jetson-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
-</p>
+<img src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/activity.png" width="900" alt="GitHub activity panel: total contributions, active days, longest streak and public repository count over the last twelve months, with a weekly contribution sparkline.">
 
-| Area | Technologies |
-|---|---|
-| **Robotics** | ROS 2 Humble, Nav2, lifecycle nodes, tf2, ros2_control, SLAM Toolbox, Gazebo, Isaac Lab, Isaac Sim |
-| **Learning** | PyTorch, PPO / reinforcement learning, sim-to-real, ONNX + parity gating, out-of-distribution detection |
-| **Perception** | YOLOv8, OpenCV, RealSense D435i, Whisper ASR, GCC-PHAT, open-vocab 3D mapping |
-| **Reliability** | Fault detection, incident forensics, fail-closed safety envelopes, acceptance evidence, paired statistical evaluation |
-| **Embedded** | Jetson Orin NX, Arduino, Raspberry Pi, sensor/actuator integration, firmware |
-| **Languages** | C++17, Python 3, MATLAB, C |
-| **Tools** | Git, Docker, CMake, colcon, Qt 6, Fusion 360 |
+</div>
 
 ---
 
-[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com)
+### <samp>08 &nbsp;//&nbsp; CONTACT</samp>
+
+[yusuf.a.guenena@gmail.com](mailto:yusuf.a.guenena@gmail.com) &nbsp;·&nbsp; [GitHub](https://github.com/yusufdxb) &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/yusuf-guenena/)
+
+<sub>The hero and the system map are interface graphics, not a live robot feed. The activity panel is real: it is regenerated from the GitHub contributions API by <a href="https://github.com/yusufdxb/yusufdxb/blob/main/.github/workflows/readme-activity.yml">a workflow in this repo</a>, with the raw response committed alongside it as <a href="https://github.com/yusufdxb/yusufdxb/blob/main/assets/readme/activity.json">activity.json</a>. Artwork generated by <a href="https://github.com/yusufdxb/yusufdxb/tree/main/tools/readme">tools/readme</a>.</sub>
