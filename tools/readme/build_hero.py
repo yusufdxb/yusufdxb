@@ -1,11 +1,13 @@
-"""Particle reconstruction loop, written as APNG with a real alpha channel.
+"""Build the hero art: a GO2 resolving out of drifting dust.
 
-The geometry never changes. Each particle gets a reveal rank from a smooth
-spatial field, and the loop only moves a threshold across those ranks, so the
-GO2 dissolves and rebuilds without ever deforming.
+The geometry is the real Unitree visual mesh (see go2_asset.py). Only which
+surface samples are drawn, and how far they have lifted off the surface,
+changes over the loop.
 
-Frame 0 is the fully resolved robot, so any context that shows a single frame
-shows the finished image.
+Motion model: every particle gets a phase from a smooth spatial field and
+lifts exactly once per loop, so at any instant a small, slowly migrating
+fraction of the surface is dust. The machine is never less than about 85%
+resolved, there is no scan front, and every frame stands on its own as a still.
 """
 
 import os
@@ -16,22 +18,23 @@ from PIL import Image
 
 import gorender as gr
 import particles as pa
+import scene as sc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "..", "assets", "readme")
 
-SCALE = 1.45
-W, H = int(1040 * SCALE), int(600 * SCALE)
-N_DOTS = 26_000
+DISPLAY_W = 430                  # width the README renders the art at
+W, H = DISPLAY_W * 2, 400 * 2    # 2x asset
+SS = 2
+N_DOTS = 24_000
 
-# Two thirds of the loop is spent on a fully resolved robot. The transition is
-# short on purpose: nobody should have to wait to see what this is.
-SCHEDULE = (
-    [(1.00, 950)] * 3 +                                            # hold, resolved
-    [(1.00 - 0.80 * (i + 1) / 6, 85) for i in range(6)] +          # dissolve
-    [(0.20 + 0.80 * ((i + 1) / 12) ** 0.85, 115) for i in range(12)] +  # rebuild
-    [(1.00, 450)] * 2                                              # settle
-)
+CAM = dict(azim=50, elev=3, dist=2.85, target=(0.02, 0.0, 0.215), focal_mm=100)
+
+FRAMES = 24
+FRAME_MS = 330                   # ~7.9 s loop
+LIFT_SHARE = 0.17                # fraction of the surface that is dust at once
+DRIFT = 24.0 * (W / 430)
+DIR_BIAS = np.array([0.92, -0.25])
 
 
 def build_field():
@@ -40,73 +43,62 @@ def build_field():
         raise SystemExit("run go2_asset.py first to build go2_posed.npz")
     d = np.load(npz)
     V, F, FT = d["V"].astype(np.float64), d["F"], d["FT"]
-    pts, nrm, tag = gr.sample_surface(V, F, FT, 2_200_000)
-    cam = gr.Camera(50, 3, 2.70, (0.02, 0.0, 0.215), focal_mm=100)
-    fld = pa.Field(pts, nrm, tag, cam, W, H, ss=2)
-    # silhouette first, then head and hip housings, then legs. Interior stays
-    # low so the robot reads as a particle sculpture rather than a shaded model.
-    idx = pa.choose(fld, N_DOTS, rim_gain=4.4, tone_gain=1.5, interior=0.12,
-                    seed=2, floor=0.12)
+    pts, nrm, tag = gr.sample_surface(V, F, FT, 1_400_000)
+    cam = gr.Camera(CAM["azim"], CAM["elev"], CAM["dist"], CAM["target"],
+                    focal_mm=CAM["focal_mm"])
+    fld = pa.Field(pts, nrm, tag, cam, W, H, ss=SS)
+    idx = pa.choose(fld, N_DOTS, rim_gain=4.6, tone_gain=1.3, interior=0.10,
+                    seed=2, floor=0.10)
     return fld, idx
 
 
-def reveal_rank(fld, idx):
-    """Smooth spatial field: the robot resolves front to back with enough
-    low-frequency noise that the front never reads as a hard line."""
+def motion(fld, idx):
+    """Per-particle phase and drift direction."""
+    rng = np.random.default_rng(19)
     p = fld.pts[idx]
-    rng = np.random.default_rng(5)
+    k = rng.normal(size=(5, 3)) * 4.0
+    ph = rng.random(5) * 2 * np.pi
+    field = sum(np.sin(p @ k[i] + ph[i]) for i in range(5)) / 5.0
+    phase = (0.5 + 0.5 * field + rng.normal(scale=0.06, size=len(idx))) % 1.0
+
+    # dust comes mostly off the rear and the upper surfaces, the way it does in
+    # the still, so the head and near legs stay crisp
     along = fld.along[idx]
-    k = rng.normal(size=(6, 3)) * 5.5
-    ph = rng.random(6) * 2 * np.pi
-    wob = sum(np.sin(p @ k[i] + ph[i]) for i in range(6)) / 6.0
-    r = 0.70 * (1.0 - along) + 0.30 * (0.5 + 0.5 * wob)
-    r += rng.normal(scale=0.045, size=len(r))
-    return np.clip((r - r.min()) / (r.max() - r.min()), 0, 1)
+    participates = rng.random(len(idx)) < np.clip(0.18 + 0.86 * (1 - along) ** 1.6, 0, 1)
+
+    direction = DIR_BIAS[None, :] + rng.normal(scale=0.42, size=(len(idx), 2))
+    reach = (rng.random(len(idx)) ** 1.8)[:, None] * DRIFT
+    return phase, participates, direction * reach
+
+
+def lift_amount(phase, u, width=LIFT_SHARE):
+    """A single smooth bump per particle per loop, wrapped."""
+    d = np.abs((u - phase + 0.5) % 1.0 - 0.5)
+    t = np.clip(1.0 - d / width, 0.0, 1.0)
+    return t * t * (3 - 2 * t)
 
 
 def frames(theme):
     fld, idx = build_field()
-    rank = reveal_rank(fld, idx)
-    col, alpha, size = pa.colours(fld, idx, theme=theme, base=0.94,
-                                  accent=False)
-    size = size * 1.30 * SCALE
-    nrm_screen = fld.rim[idx]
-    rng = np.random.default_rng(31)
-    drift = rng.normal(size=(len(idx), 2)) * ((2.4 + 3.0 * nrm_screen) * SCALE)[:, None]
+    phase, participates, drift = motion(fld, idx)
+    col, alpha0, size0 = pa.colours(fld, idx, theme=theme, base=0.90,
+                                    accent=False)
+    size0 = size0 * 1.40 * (W / 470)
     xy0 = fld.xy[idx].copy()
 
-    shadow = pa.ground_shadow(fld, theme)
-
-    out, durations = [], []
-    for progress, ms in SCHEDULE:
-        vis = np.clip((progress - rank) / 0.22 + 0.5, 0, 1)
-        vis = vis * vis * (3 - 2 * vis)
-        if progress >= 0.999:
-            vis[:] = 1.0
-        keep = vis > 0.012
-        fld.xy[idx] = xy0 + drift * ((1.0 - vis) ** 1.6)[:, None] * fld.ss
-        im = pa.draw(fld, idx[keep], col[keep],
-                     alpha[keep] * vis[keep],
-                     size[keep] * (0.72 + 0.28 * vis[keep]), out_alpha=True)
-        # the shadow is identical in every frame: the robot is there the whole
-        # time, only its particle representation resolves. Holding it constant
-        # also lets the encoder diff it away instead of re-coding a large soft
-        # gradient 25 times.
-        sh = shadow.copy()
-        sh.alpha_composite(im)
-        out.append(sh)
-        durations.append(ms)
+    out = []
+    for i in range(FRAMES):
+        u = i / FRAMES
+        L = lift_amount(phase, u) * participates
+        fld.xy[idx] = xy0 + drift * L[:, None]
+        a = alpha0 * (1.0 - 0.52 * L)
+        s = size0 * (1.0 - 0.18 * L)
+        out.append(pa.draw(fld, idx, col, a, s, out_alpha=True))
     fld.xy[idx] = xy0
-    return out, durations
+    return out
 
 
-MARGIN = 190   # asset px of empty space on every side of the robot
-
-
-def pad_uniform(ims, margin=MARGIN):
-    """Put the robot on a canvas with the same empty margin on all four sides.
-    Cropping alone cannot do this: the render canvas has no room to grow into,
-    so the top and bottom margins come out clamped."""
+def pad_uniform(ims, margin=26):
     box = None
     for im in ims:
         b = im.getchannel("A").point(lambda v: 255 if v > 3 else 0).getbbox()
@@ -124,23 +116,7 @@ def pad_uniform(ims, margin=MARGIN):
     return out
 
 
-def content_box(ims, margin=MARGIN):
-    """Union alpha bounding box over every frame, so the transparent margin
-    (which is most of the file) is not shipped."""
-    box = None
-    for im in ims:
-        b = im.getchannel("A").point(lambda v: 255 if v > 3 else 0).getbbox()
-        if b is None:
-            continue
-        box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]),
-                                     max(box[2], b[2]), max(box[3], b[3]))
-    x0, y0, x1, y1 = box
-    return (max(0, x0 - margin), max(0, y0 - margin),
-            min(ims[0].width, x1 + margin), min(ims[0].height, y1 + margin))
-
-
 def posterize(im, rgb_bits=5, a_bits=6):
-    """Fewer distinct values compress far better and are invisible on dots."""
     a = np.asarray(im).astype(np.uint16)
     rq, aq = 1 << (8 - rgb_bits), 1 << (8 - a_bits)
     a[..., :3] = (a[..., :3] // rq) * rq + rq // 2
@@ -149,24 +125,24 @@ def posterize(im, rgb_bits=5, a_bits=6):
 
 
 if __name__ == "__main__":
-    import pickle
     os.makedirs(OUT, exist_ok=True)
+    sizes = {}
     for theme in ("light", "dark"):
-        cache = os.path.join(HERE, f".frames_{theme}.pkl")
-        if os.path.exists(cache) and "--recache" not in sys.argv:
-            with open(cache, "rb") as fh:
-                ims, dur = pickle.load(fh)
-        else:
-            ims, dur = frames(theme)
-            box = content_box(ims)
-            ims = [posterize(im.crop(box)) for im in ims]
-            with open(cache, "wb") as fh:
-                pickle.dump((ims, dur), fh)
-        ims = pad_uniform(ims)
-        q = int(os.environ.get("WEBP_Q", "72"))
+        ims = pad_uniform([posterize(im) for im in frames(theme)])
+        sizes[theme] = ims
+    w = max(v[0].width for v in sizes.values())
+    h = max(v[0].height for v in sizes.values())
+    for theme, ims in sizes.items():
+        norm = []
+        for im in ims:
+            c = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+            c.alpha_composite(im, ((w - im.width) // 2, (h - im.height) // 2))
+            norm.append(c)
         path = os.path.join(OUT, f"hero-{theme}.webp")
-        ims[0].save(path, save_all=True, append_images=ims[1:], duration=dur,
-                    loop=0, lossless=False, quality=q, method=6,
-                    minimize_size=True)
-        print(f"[{theme}] {ims[0].size[0]}x{ims[0].size[1]}  {len(ims)} frames  "
-              f"{sum(dur)/1000:.2f}s  webp {os.path.getsize(path)/1e6:.2f} MB")
+        norm[0].save(path, save_all=True, append_images=norm[1:],
+                     duration=[FRAME_MS] * len(norm), loop=0, lossless=False,
+                     quality=int(os.environ.get("WEBP_Q", "74")), method=4,
+                     minimize_size=True)
+        print(f"[{theme}] {w}x{h}  {len(norm)} frames  "
+              f"{len(norm)*FRAME_MS/1000:.1f}s  "
+              f"{os.path.getsize(path)/1e6:.2f} MB")
