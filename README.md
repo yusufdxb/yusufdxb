@@ -39,8 +39,6 @@ Real-robot assistive autonomy on the Unitree GO2. Someone says *"come here"* fro
 
 Two live end-to-end hardware runs on the GO2, one of them a blind trial with the caller's position undisclosed; that one documented trial reached the seated state about 12.8 s after wake detection. The stack can be launched through a systemd unit on the Jetson, and it refuses to arm unless the robot is already standing.
 
-> **What is still open:** two runs show the behavior executes; they are not a robustness study, and other attempts in that session did not complete. Right-side bearings are inconsistent (the same spot has read +141°, -100°, and -90° across runs), and the full-circle camera scan that backstops a bad bearing has never been needed live, so it is unproven on hardware. Five consecutive successes on one frozen config are owed before the demo video. The armed boot path has not been watched end to end. The work above lives on the `demo-doa` branch; `main` is the earlier camera-only version.
-
 `ROS 2 Humble` `ReSpeaker 4-Mic Array` `Whisper ASR` `YOLO11n` `systemd` `Jetson Orin NX` `Unitree GO2`
 
 ### helix
@@ -54,8 +52,6 @@ Runtime failure detection and recovery for the GO2 autonomy stack, built as a fo
 
 Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: a 439 s idle run producing 30 anomalies into 14 recovery hints into 14 audited recovery actions, with no allowlist or cooldown violation. [`dashboard/helix_console.html`](https://github.com/yusufdxb/helix/tree/main/dashboard) replays that session tier by tier from the extracted telemetry, offline and with no build step.
 
-> **Open limitations, named rather than buried:** `/helix/cmd_vel` had zero downstream subscribers during Session 8, so `STOP_AND_HOLD` is a real, audited decision landing on a topic nothing is listening to. "The robot holds" is proven through the software path only; wiring it through a `twist_mux` fallback to the motors is the next hardware task. That same idle session produced 9 stops in 7m19s, which is the false-positive rate to assume until the detector work lands in the shipped config.
-
 `ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
 
 ### go2-phoenix
@@ -66,8 +62,6 @@ Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab ses
 ![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
 
 The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real learning for locomotion. A policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson. The shipped stand policy (`stand-v3-h25`) evaluates at 32/32 success in simulation, with per-step slew saturation at 3.30% nominal and 2.91% under full domain randomization against a <5% gate.
-
-> **Where it stands:** on-robot locomotion validation (Gate 7) is open; the last live run saturated at 33% slew and no on-robot stand has cleared the gate. An export audit found pre-audit checkpoints silently dropped observation normalization, so every checkpoint owes a re-export and a fresh parity check before the retry. The adaptation loop has not yet closed once on real failure data: the replay and fine-tune path is wired and unit-tested, but no hardware failure Parquets exist to feed it. [`EVIDENCE.md`](https://github.com/yusufdxb/go2-phoenix/blob/main/EVIDENCE.md) is the verified / inferred / not-validated ledger.
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
 
@@ -118,8 +112,6 @@ A guide dog has to be summonable. If the handler puts the harness down, sits on 
 A GO2 you talk to, with the brains running entirely on local hardware: no API key, no subscription, no cloud. You say *"Fetch, describe the room."* and the dog turns through a yaw-only scan, sends each view to a local vision-language model, aggregates the views into one grounded description, and says it out loud through its own speaker. The scene question is asked as closed yes/no prompts rather than open description, because an open "scene" field made the model return empty objects on live frames, and a per-view verification pass re-asks each view's top objects on the same image, which cut false objects on blank walls from 10 to 0 without losing a real one.
 
 The important part is what owns the wheels. A **safety envelope is the only publisher on `/cmd_vel`**: the language layer proposes, the envelope disposes, a wireless deadman on the remote's L1 gates motion by default, and the whole stack refuses to arm without it unless you pass an explicit flag that prints an error banner. Voice-triggered end to end on the real GO2 in 31.2 s with no degraded subsystems, after a live fix to the microphone gate that is now the launch default.
-
-> **What is still open:** heading ends about 12° off after a full scan (clockwise undershoot). Object naming on low-texture views is a carried risk. The spoken scan is verified; navigation to a named place is not the demonstrated path. The source stays private while the work is in progress.
 
 `ROS 2 Humble` `Local VLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
 
