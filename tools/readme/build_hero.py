@@ -22,7 +22,7 @@ OUT = os.path.join(HERE, "..", "..", "assets", "readme")
 
 SCALE = 1.45
 W, H = int(1040 * SCALE), int(600 * SCALE)
-N_DOTS = 58_000
+N_DOTS = 26_000
 
 # Two thirds of the loop is spent on a fully resolved robot. The transition is
 # short on purpose: nobody should have to wait to see what this is.
@@ -43,8 +43,10 @@ def build_field():
     pts, nrm, tag = gr.sample_surface(V, F, FT, 2_200_000)
     cam = gr.Camera(50, 3, 2.70, (0.02, 0.0, 0.215), focal_mm=100)
     fld = pa.Field(pts, nrm, tag, cam, W, H, ss=2)
-    idx = pa.choose(fld, N_DOTS, rim_gain=3.6, tone_gain=2.0, interior=0.34,
-                    seed=2, floor=0.16)
+    # silhouette first, then head and hip housings, then legs. Interior stays
+    # low so the robot reads as a particle sculpture rather than a shaded model.
+    idx = pa.choose(fld, N_DOTS, rim_gain=4.4, tone_gain=1.5, interior=0.12,
+                    seed=2, floor=0.12)
     return fld, idx
 
 
@@ -65,8 +67,9 @@ def reveal_rank(fld, idx):
 def frames(theme):
     fld, idx = build_field()
     rank = reveal_rank(fld, idx)
-    col, alpha, size = pa.colours(fld, idx, theme=theme, base=0.92)
-    size = size * 1.10 * SCALE
+    col, alpha, size = pa.colours(fld, idx, theme=theme, base=0.94,
+                                  accent=False)
+    size = size * 1.30 * SCALE
     nrm_screen = fld.rim[idx]
     rng = np.random.default_rng(31)
     drift = rng.normal(size=(len(idx), 2)) * ((2.4 + 3.0 * nrm_screen) * SCALE)[:, None]
@@ -97,7 +100,31 @@ def frames(theme):
     return out, durations
 
 
-def content_box(ims, margin=18):
+MARGIN = 190   # asset px of empty space on every side of the robot
+
+
+def pad_uniform(ims, margin=MARGIN):
+    """Put the robot on a canvas with the same empty margin on all four sides.
+    Cropping alone cannot do this: the render canvas has no room to grow into,
+    so the top and bottom margins come out clamped."""
+    box = None
+    for im in ims:
+        b = im.getchannel("A").point(lambda v: 255 if v > 3 else 0).getbbox()
+        if b is None:
+            continue
+        box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]),
+                                     max(box[2], b[2]), max(box[3], b[3]))
+    x0, y0, x1, y1 = box
+    w, h = (x1 - x0) + 2 * margin, (y1 - y0) + 2 * margin
+    out = []
+    for im in ims:
+        c = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        c.alpha_composite(im, (margin - x0, margin - y0))
+        out.append(c)
+    return out
+
+
+def content_box(ims, margin=MARGIN):
     """Union alpha bounding box over every frame, so the transparent margin
     (which is most of the file) is not shipped."""
     box = None
@@ -135,6 +162,7 @@ if __name__ == "__main__":
             ims = [posterize(im.crop(box)) for im in ims]
             with open(cache, "wb") as fh:
                 pickle.dump((ims, dur), fh)
+        ims = pad_uniform(ims)
         q = int(os.environ.get("WEBP_Q", "72"))
         path = os.path.join(OUT, f"hero-{theme}.webp")
         ims[0].save(path, save_all=True, append_images=ims[1:], duration=dur,

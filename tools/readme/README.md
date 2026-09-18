@@ -10,8 +10,6 @@ gorender.py         area-weighted surface sampling, camera, splatting, shading
 particles.py        the particle treatment: which samples are drawn, how dark,
                     how large, per theme
 build_hero.py       the reconstruction loop -> assets/readme/hero-{light,dark}.webp
-render_activity.py  real contribution data -> the sparkline and the one
-                    sentence of numbers in README.md
 ```
 
 ## Where the geometry comes from
@@ -53,14 +51,3 @@ the robot dissolves and rebuilds without deforming. Frame 0 is the fully
 resolved robot, so any context that shows a single frame shows the finished
 image. Both themes draw on full transparency, so the robot sits on the GitHub
 page rather than inside a panel.
-
-## Activity
-
-`render_activity.py` needs a GitHub token in `README_TOKEN`, `GH_TOKEN` or
-`GITHUB_TOKEN`, and otherwise falls back to `gh auth token`. It writes the raw
-API response to `assets/readme/activity.json` next to the sparkline, so any
-number can be checked against its source, and rewrites the sentence between the
-`<!--activity-->` markers in README.md. If the fetch fails it exits non-zero
-rather than drawing a stale or invented figure.
-`.github/workflows/readme-activity.yml` runs it daily and commits only on a
-change.
