@@ -7,9 +7,9 @@
 
 <h1>Yusuf Guenena</h1>
 
-<p><strong>I build the reliability layer for learned robot systems.</strong></p>
+<p><strong>I build dependable autonomy for quadruped robots working around people.</strong></p>
 
-<p>M.S. Robotics Engineering @ Wayne State University · Runtime safety for learned policies · Sim-to-real on quadrupeds</p>
+<p>M.S. Robotics Engineering @ Wayne State University · Assistive autonomy on the Unitree GO2 · Runtime safety and recovery</p>
 
 <p>
 <a href="mailto:yusuf.a.guenena@gmail.com"><img src="https://img.shields.io/badge/Email-yusuf.a.guenena%40gmail.com-EA4335?logo=gmail&logoColor=white" alt="Email"></a>
@@ -21,13 +21,27 @@
 
 ---
 
-Learned policies fail quietly. A locomotion network saturates, a perception model stops perceiving, a simulator's counterfactual stops being faithful, and nothing in the stack raises its hand. Most of what I build is the layer that notices: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence you can re-verify a year later.
+I build physical autonomy first, then the reliability systems needed to trust it. Come Here is the real-robot baseline: a spoken command becomes a localized caller, a turn, a visual acquisition, an approach, and a sit. My M.S. thesis, *Safe Assistive Quadruped Autonomy*, researches how an assistive robot should interpret and act on human commands when blindly obeying them could be unsafe. Underneath is the layer that notices when learned components fail quietly: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence you can re-verify a year later.
 
 I work across the stack: C++ control loops, Python perception and RL, ROS 2 architecture, embedded firmware, CAD, and the GUIs on top. Most of it runs on a Unitree GO2. Every repo below states what has actually run on hardware and what has not, because that distinction is the whole job.
 
 ---
 
 ## Featured Work
+
+### come-here
+
+[![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
+![Stars](https://img.shields.io/github/stars/yusufdxb/come-here?style=flat&color=yellow)
+![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
+
+Real-robot assistive autonomy on the Unitree GO2. Someone says *"come here"* from outside the camera's field of view and the dog has to solve the whole problem, onboard the Jetson: **hear the caller, localize them, turn, visually acquire them, approach, stop, sit.** The ReSpeaker array's firmware DOA register gives the bearing (software SRP-PHAT was tried on the mounted array and failed, which is itself the finding), a bounded whole-token Whisper matcher gates the wake so ordinary lab talk does not trigger it, the turn closes on `/utlidar/robot_odom` yaw, then YOLO11n takes over for acquisition, alignment, approach, and a bounding-box stop at 75% of frame height.
+
+Two live end-to-end hardware runs on the GO2, one of them a blind trial with the caller's position undisclosed; that one documented trial reached the seated state about 12.8 s after wake detection. The stack can be launched through a systemd unit on the Jetson, and it refuses to arm unless the robot is already standing.
+
+> **What is still open:** two runs show the behavior executes; they are not a robustness study, and other attempts in that session did not complete. Right-side bearings are inconsistent (the same spot has read +141°, -100°, and -90° across runs), and the full-circle camera scan that backstops a bad bearing has never been needed live, so it is unproven on hardware. Five consecutive successes on one frozen config are owed before the demo video. The armed boot path has not been watched end to end. The work above lives on the `demo-doa` branch; `main` is the earlier camera-only version.
+
+`ROS 2 Humble` `ReSpeaker 4-Mic Array` `Whisper ASR` `YOLO11n` `systemd` `Jetson Orin NX` `Unitree GO2`
 
 ### helix
 
@@ -36,7 +50,7 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
 ![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
 
-A self-healing runtime for ROS 2 robots, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. The C++ port of the hot-path anomaly detector has landed (`helix_sensing_cpp`): a 30-minute hardware parity run measured -56% RSS and -60% CPU against the Python node, and it stays launch-gated behind `use_cpp_anomaly=false` until parity is re-confirmed.
+Runtime failure detection and recovery for the GO2 autonomy stack, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. The C++ port of the hot-path anomaly detector has landed (`helix_sensing_cpp`): a 30-minute hardware parity run measured -56% RSS and -60% CPU against the Python node, and it stays launch-gated behind `use_cpp_anomaly=false` until parity is re-confirmed.
 
 Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: a 439 s idle run producing 30 anomalies into 14 recovery hints into 14 audited recovery actions, with no allowlist or cooldown violation. [`dashboard/helix_console.html`](https://github.com/yusufdxb/helix/tree/main/dashboard) replays that session tier by tier from the extracted telemetry, offline and with no build step.
 
@@ -51,25 +65,11 @@ Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab ses
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Nu0oWyJJbEM)
 ![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
 
-Closed-loop sim-to-real learning for the GO2. A locomotion policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson. The shipped stand policy (`stand-v3-h25`) evaluates at 32/32 success in simulation, with per-step slew saturation at 3.30% nominal and 2.91% under full domain randomization against a <5% gate.
+The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real learning for locomotion. A policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson. The shipped stand policy (`stand-v3-h25`) evaluates at 32/32 success in simulation, with per-step slew saturation at 3.30% nominal and 2.91% under full domain randomization against a <5% gate.
 
 > **Where it stands:** on-robot locomotion validation (Gate 7) is open; the last live run saturated at 33% slew and no on-robot stand has cleared the gate. An export audit found pre-audit checkpoints silently dropped observation normalization, so every checkpoint owes a re-export and a fresh parity check before the retry. The adaptation loop has not yet closed once on real failure data: the replay and fine-tune path is wired and unit-tested, but no hardware failure Parquets exist to feed it. [`EVIDENCE.md`](https://github.com/yusufdxb/go2-phoenix/blob/main/EVIDENCE.md) is the verified / inferred / not-validated ledger.
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
-
-### come-here
-
-[![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
-![Stars](https://img.shields.io/github/stars/yusufdxb/come-here?style=flat&color=yellow)
-![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
-
-Recall, closed on the real robot. Someone says *"come here"* from outside the camera's field of view and the dog has to solve the whole problem: **hear it, work out where it came from, turn, find the person, walk over, stop, sit.** The ReSpeaker array's firmware DOA register gives the bearing (software SRP-PHAT was tried on the mounted array and failed, which is itself the finding), a bounded whole-token Whisper matcher gates the wake so ordinary lab talk does not trigger it, the turn closes on `/utlidar/robot_odom` yaw, then YOLOv8 takes over for acquisition, alignment, approach, and a bounding-box stop at 75% of frame height.
-
-Two live end-to-end successes on the GO2, one of them a blind call with the caller's position undisclosed beforehand: bearing -59°, turn -56° in 1.16 s, acquisition at +22°, 0.66 m of approach, sit, about 9.6 s from wake word to seated. A systemd unit brings the stack up at boot, listening roughly 45 s after power-on with no laptop, no SSH, and no terminal, and it refuses to arm unless the robot is already standing.
-
-> **What is still open:** right-side bearings are inconsistent (the same spot has read +141°, -100°, and -90° across runs), and the full-circle camera scan that backstops a bad bearing has never been needed live, so it is unproven on hardware. Five consecutive successes on one frozen config are owed before the demo video. The armed boot path has not been watched end to end. The work above lives on the `demo-doa` branch; `main` is the earlier camera-only version.
-
-`ROS 2 Humble` `ReSpeaker 4-Mic Array` `Whisper ASR` `YOLOv8` `systemd` `Jetson Orin NX` `Unitree GO2`
 
 ### ivf
 
@@ -90,7 +90,7 @@ The flagship case is a real PhysX versus Newton/MJWarp cart-pole comparison whos
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/tnM18XGbNMY)
 [![Writeup](https://img.shields.io/badge/Writeup-PDF-8A2BE2?style=flat)](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf)
 
-A distribution-shift teardown of the neural network that drives openpilot, an L2 driver-assistance system deployed on public roads. One question: presented with input outside its training distribution, does it fail conspicuously or silently?
+Independent failure-awareness research, separate from the quadruped work: a distribution-shift teardown of the neural network that drives openpilot, an L2 driver-assistance system deployed on public roads. One question: presented with input outside its training distribution, does it fail conspicuously or silently?
 
 Silently. The study rests on a parity-controlled reimplementation of v0.9.7 inference that agrees with comma's own reference output on 100% of 1159 real frames within ±0.5 m/s², so the negative result is attributable to the model and not the harness. Under shift, 8 of 10 tracked output readouts fall below 1% of real activity, the recurrent state contracts to a point, and the exported uncertainty heads rise only 1.20-1.84x and never leave their nominal real-driving range. An internal recurrent signal does encode the failure and is recoverable, but the model never exposes it. The result is also version-specific: on v0.9.6 the silent freeze does not reproduce, and the model fails by chaotic amplification instead. [Full writeup](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf), not submitted.
 
@@ -144,7 +144,7 @@ A connected body of work turning a stock quadruped into something that learns, n
 
 ## Reliability & Observability for Robots
 
-The layer that tells you *when your robot is about to do something stupid* and catches it on the way down.
+The infrastructure under the autonomy: it tells you *when your robot is about to do something stupid* and catches it on the way down.
 
 | Project | What it does | Status |
 |---|---|---|
