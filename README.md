@@ -110,6 +110,20 @@ A guide dog has to be summonable. If the handler puts the harness down, sits on 
 
 `ROS 2 Humble` `GCC-PHAT` `Whisper ASR` `YOLOv8` `RealSense D435i` `Nav2` `C++ Lifecycle Node`
 
+### FETCH (GuideDog-X)
+
+![Repo](https://img.shields.io/badge/Repo-private-lightgrey?style=flat&logo=github)
+![Status](https://img.shields.io/badge/Status-Voice_demo_live_on_the_GO2-brightgreen?style=flat)
+
+A GO2 you talk to, with the brains running entirely on local hardware: no API key, no subscription, no cloud. You say *"Fetch, describe the room."* and the dog turns through a yaw-only scan, sends each view to a local vision-language model, aggregates the views into one grounded description, and says it out loud through its own speaker. The scene question is asked as closed yes/no prompts rather than open description, because an open "scene" field made the model return empty objects on live frames, and a per-view verification pass re-asks each view's top objects on the same image, which cut false objects on blank walls from 10 to 0 without losing a real one.
+
+The important part is what owns the wheels. A **safety envelope is the only publisher on `/cmd_vel`**: the language layer proposes, the envelope disposes, a wireless deadman on the remote's L1 gates motion by default, and the whole stack refuses to arm without it unless you pass an explicit flag that prints an error banner. Voice-triggered end to end on the real GO2 in 31.2 s with no degraded subsystems, after a live fix to the microphone gate that is now the launch default.
+
+> **What is still open:** heading ends about 12° off after a full scan (clockwise undershoot). Object naming on low-texture views is a carried risk. The spoken scan is verified; navigation to a named place is not the demonstrated path. The source stays private while the work is in progress.
+
+`ROS 2 Humble` `Local VLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
+
+
 ---
 
 ## The GO2 Quadruped Stack
