@@ -1,13 +1,12 @@
-"""Build the hero art: a GO2 resolving out of drifting dust.
+"""Build the hero art: a GO2 that dissolves into dust and rebuilds out of it.
 
-The geometry is the real Unitree visual mesh (see go2_asset.py). Only which
-surface samples are drawn, and how far they have lifted off the surface,
-changes over the loop.
+The geometry is the real Unitree visual mesh (see go2_asset.py) and it never
+deforms. Each particle gets a reveal rank from a smooth spatial field, and the
+loop only moves a threshold across those ranks, so the machine comes apart and
+comes back without the shape ever changing.
 
-Motion model: every particle gets a phase from a smooth spatial field and
-lifts exactly once per loop, so at any instant a small, slowly migrating
-fraction of the surface is dust. The machine is never less than about 85%
-resolved, there is no scan front, and every frame stands on its own as a still.
+Frame 0 is the fully resolved robot, so any context that shows a single frame
+(reduced motion, a social card, a static mirror) shows the finished image.
 """
 
 import os
@@ -24,20 +23,26 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "..", "assets", "readme")
 
 DISPLAY_W = 760                  # width the README renders the art at
-W, H = 1520, 1400                # 2x asset
+W, H = 1520, 1100                # 2x asset
 SS = 2
-# Density, dot size and drift are all held at the values tuned on the smaller
-# hero, expressed so they stay constant in DISPLAY pixels as the art grows.
+# Density and dot size are held at the values tuned for this display width.
 N_DOTS = 56_000
 DOT_MULT = 1.40 * (860 / 470)
 
 CAM = dict(azim=50, elev=3, dist=2.85, target=(0.02, 0.0, 0.215), focal_mm=100)
 
-FRAMES = 18
-FRAME_MS = 440                   # ~7.9 s loop
-LIFT_SHARE = 0.15                # fraction of the surface that is dust at once
-DRIFT = 34.0                     # render px; small steps keep the drift calm
-DIR_BIAS = np.array([0.92, -0.25])
+# Most of the loop is a fully resolved robot. The transition is short on
+# purpose: nobody should have to wait to see what this is. GONE is far enough
+# past zero that every particle clears, so the robot really does leave.
+GONE = -0.18
+SCHEDULE = (
+    [(1.00, 950)] * 3 +                                                       # hold
+    [(1.00 - (1.00 - GONE) * (i + 1) / 8, 80) for i in range(8)] +            # dissolve
+    [(GONE + (1.00 - GONE) * ((i + 1) / 13) ** 0.85, 105) for i in range(13)] +  # rebuild
+    [(1.00, 450)] * 2                                                         # settle
+)
+REVEAL_WIDTH = 0.22              # how soft the resolving front is
+DRIFT = 1.45 * np.array([4.5, 6.0])   # render px: base, plus rim-weighted term
 
 
 def build_field():
@@ -55,50 +60,46 @@ def build_field():
     return fld, idx
 
 
-def motion(fld, idx):
-    """Per-particle phase and drift direction."""
-    rng = np.random.default_rng(19)
+def reveal_rank(fld, idx):
+    """Smooth spatial field: the robot resolves back to front with enough
+    low-frequency noise that the front never reads as a hard line."""
     p = fld.pts[idx]
-    k = rng.normal(size=(5, 3)) * 4.0
-    ph = rng.random(5) * 2 * np.pi
-    field = sum(np.sin(p @ k[i] + ph[i]) for i in range(5)) / 5.0
-    phase = (0.5 + 0.5 * field + rng.normal(scale=0.06, size=len(idx))) % 1.0
-
-    # dust comes mostly off the rear and the upper surfaces, the way it does in
-    # the still, so the head and near legs stay crisp
+    rng = np.random.default_rng(5)
     along = fld.along[idx]
-    participates = rng.random(len(idx)) < np.clip(0.18 + 0.86 * (1 - along) ** 1.6, 0, 1)
-
-    direction = DIR_BIAS[None, :] + rng.normal(scale=0.42, size=(len(idx), 2))
-    reach = (rng.random(len(idx)) ** 1.8)[:, None] * DRIFT
-    return phase, participates, direction * reach
-
-
-def lift_amount(phase, u, width=LIFT_SHARE):
-    """A single smooth bump per particle per loop, wrapped."""
-    d = np.abs((u - phase + 0.5) % 1.0 - 0.5)
-    t = np.clip(1.0 - d / width, 0.0, 1.0)
-    return t * t * (3 - 2 * t)
+    k = rng.normal(size=(6, 3)) * 5.5
+    ph = rng.random(6) * 2 * np.pi
+    wob = sum(np.sin(p @ k[i] + ph[i]) for i in range(6)) / 6.0
+    r = 0.70 * (1.0 - along) + 0.30 * (0.5 + 0.5 * wob)
+    r += rng.normal(scale=0.045, size=len(r))
+    return np.clip((r - r.min()) / (r.max() - r.min()), 0, 1)
 
 
 def frames(theme):
     fld, idx = build_field()
-    phase, participates, drift = motion(fld, idx)
-    col, alpha0, size0 = pa.colours(fld, idx, theme=theme, base=0.90,
-                                    accent=False)
-    size0 = size0 * DOT_MULT
+    rank = reveal_rank(fld, idx)
+    col, alpha, size = pa.colours(fld, idx, theme=theme, base=0.90,
+                                  accent=False)
+    size = size * DOT_MULT
+    rng = np.random.default_rng(31)
+    scatter = (DRIFT[0] + DRIFT[1] * fld.rim[idx])[:, None]
+    drift = rng.normal(size=(len(idx), 2)) * scatter
     xy0 = fld.xy[idx].copy()
 
-    out = []
-    for i in range(FRAMES):
-        u = i / FRAMES
-        L = lift_amount(phase, u) * participates
-        fld.xy[idx] = xy0 + drift * L[:, None]
-        a = alpha0 * (1.0 - 0.52 * L)
-        s = size0 * (1.0 - 0.18 * L)
-        out.append(pa.draw(fld, idx, col, a, s, out_alpha=True))
+    out, durations = [], []
+    for progress, ms in SCHEDULE:
+        vis = np.clip((progress - rank) / REVEAL_WIDTH + 0.5, 0, 1)
+        vis = vis * vis * (3 - 2 * vis)
+        if progress >= 0.999:
+            vis[:] = 1.0
+        keep = vis > 0.012
+        fld.xy[idx] = xy0 + drift * ((1.0 - vis) ** 1.6)[:, None] * fld.ss
+        out.append(pa.draw(fld, idx[keep], col[keep],
+                           alpha[keep] * vis[keep],
+                           size[keep] * (0.72 + 0.28 * vis[keep]),
+                           out_alpha=True))
+        durations.append(ms)
     fld.xy[idx] = xy0
-    return out
+    return out, durations
 
 
 def pad_uniform(ims, margin=50):
@@ -135,15 +136,16 @@ if __name__ == "__main__":
         cache = os.path.join(HERE, f".frames_{theme}.pkl")
         if os.path.exists(cache) and "--recache" not in sys.argv:
             with open(cache, "rb") as fh:
-                ims = pickle.load(fh)
+                ims, dur = pickle.load(fh)
         else:
-            ims = pad_uniform([posterize(im) for im in frames(theme)])
+            ims, dur = frames(theme)
+            ims = pad_uniform([posterize(im) for im in ims])
             with open(cache, "wb") as fh:
-                pickle.dump(ims, fh)
-        sizes[theme] = ims
-    w = max(v[0].width for v in sizes.values())
-    h = max(v[0].height for v in sizes.values())
-    for theme, ims in sizes.items():
+                pickle.dump((ims, dur), fh)
+        sizes[theme] = (ims, dur)
+    w = max(v[0][0].width for v in sizes.values())
+    h = max(v[0][0].height for v in sizes.values())
+    for theme, (ims, dur) in sizes.items():
         norm = []
         for im in ims:
             c = Image.new("RGBA", (w, h), (0, 0, 0, 0))
@@ -151,9 +153,8 @@ if __name__ == "__main__":
             norm.append(c)
         path = os.path.join(OUT, f"hero-{theme}.webp")
         norm[0].save(path, save_all=True, append_images=norm[1:],
-                     duration=[FRAME_MS] * len(norm), loop=0, lossless=False,
-                     quality=int(os.environ.get("WEBP_Q", "74")), method=4,
+                     duration=dur, loop=0, lossless=False,
+                     quality=int(os.environ.get("WEBP_Q", "72")), method=6,
                      minimize_size=True)
         print(f"[{theme}] {w}x{h}  {len(norm)} frames  "
-              f"{len(norm)*FRAME_MS/1000:.1f}s  "
-              f"{os.path.getsize(path)/1e6:.2f} MB")
+              f"{sum(dur)/1000:.2f}s  {os.path.getsize(path)/1e6:.2f} MB")
