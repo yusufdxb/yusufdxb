@@ -57,6 +57,20 @@ Closed-loop sim-to-real learning for the GO2. A locomotion policy trains in Isaa
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
 
+### come-here
+
+[![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
+![Stars](https://img.shields.io/github/stars/yusufdxb/come-here?style=flat&color=yellow)
+![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
+
+Recall, closed on the real robot. Someone says *"come here"* from outside the camera's field of view and the dog has to solve the whole problem: **hear it, work out where it came from, turn, find the person, walk over, stop, sit.** The ReSpeaker array's firmware DOA register gives the bearing (software SRP-PHAT was tried on the mounted array and failed, which is itself the finding), a bounded whole-token Whisper matcher gates the wake so ordinary lab talk does not trigger it, the turn closes on `/utlidar/robot_odom` yaw, then YOLOv8 takes over for acquisition, alignment, approach, and a bounding-box stop at 75% of frame height.
+
+Two live end-to-end successes on the GO2, one of them a blind call with the caller's position undisclosed beforehand: bearing -59°, turn -56° in 1.16 s, acquisition at +22°, 0.66 m of approach, sit, about 9.6 s from wake word to seated. A systemd unit brings the stack up at boot, listening roughly 45 s after power-on with no laptop, no SSH, and no terminal, and it refuses to arm unless the robot is already standing.
+
+> **What is still open:** right-side bearings are inconsistent (the same spot has read +141°, -100°, and -90° across runs), and the full-circle camera scan that backstops a bad bearing has never been needed live, so it is unproven on hardware. Five consecutive successes on one frozen config are owed before the demo video. The armed boot path has not been watched end to end. The work above lives on the `demo-doa` branch; `main` is the earlier camera-only version.
+
+`ROS 2 Humble` `ReSpeaker 4-Mic Array` `Whisper ASR` `YOLOv8` `systemd` `Jetson Orin NX` `Unitree GO2`
+
 ### ivf
 
 [![Repo](https://img.shields.io/badge/GitHub-ivf-181717?style=flat&logo=github)](https://github.com/yusufdxb/ivf)
@@ -104,7 +118,7 @@ A connected body of work turning a stock quadruped into something that learns, n
 
 | Project | What it does | Status |
 |---|---|---|
-| **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | hear → rotate validated on the live GO2 |
+| **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | full recall loop live on the GO2 |
 | **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths through an explainable Nav2 overlay. | hardware-unverified |
 | **[go2-semantic-nav](https://github.com/yusufdxb/go2-semantic-nav)** | Open-vocab 3D semantic scene graph feeding a language-grounded Nav2 overlay on a Jetson. | workstation eval landed, robot eval pending |
 | **[go2-audio](https://github.com/yusufdxb/go2-audio)** | Real microphone audio off a GO2 over WebRTC, because the DDS `/audiosender` topic is broken. | |
