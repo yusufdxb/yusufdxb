@@ -94,8 +94,6 @@ Silently. The study rests on a parity-controlled reimplementation of v0.9.7 infe
 
 A guide dog has to be summonable. If the handler puts the harness down, sits on a bench, and then wants the dog back, the dog finds them by voice, not by an app or a joystick. This repository closes the **recall** half of that interaction on real hardware: a four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and publishes a Nav2 goal.
 
-> **Scope, stated plainly:** this recalls the robot, it does not guide the user anywhere. Safety alerts are advisory and do not hard-gate motion. 32 unit tests pass, and nothing here has a measured accuracy or latency result on the real robot yet. End-to-end recall on hardware is the open item.
-
 `ROS 2 Humble` `GCC-PHAT` `Whisper ASR` `YOLOv8` `RealSense D435i` `Nav2` `C++ Lifecycle Node`
 
 ---
