@@ -23,17 +23,20 @@ import scene as sc
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "..", "assets", "readme")
 
-DISPLAY_W = 430                  # width the README renders the art at
-W, H = DISPLAY_W * 2, 400 * 2    # 2x asset
+DISPLAY_W = 760                  # width the README renders the art at
+W, H = 1520, 1400                # 2x asset
 SS = 2
-N_DOTS = 24_000
+# Density, dot size and drift are all held at the values tuned on the smaller
+# hero, expressed so they stay constant in DISPLAY pixels as the art grows.
+N_DOTS = 56_000
+DOT_MULT = 1.40 * (860 / 470)
 
 CAM = dict(azim=50, elev=3, dist=2.85, target=(0.02, 0.0, 0.215), focal_mm=100)
 
-FRAMES = 24
-FRAME_MS = 330                   # ~7.9 s loop
-LIFT_SHARE = 0.17                # fraction of the surface that is dust at once
-DRIFT = 24.0 * (W / 430)
+FRAMES = 18
+FRAME_MS = 440                   # ~7.9 s loop
+LIFT_SHARE = 0.15                # fraction of the surface that is dust at once
+DRIFT = 34.0                     # render px; small steps keep the drift calm
 DIR_BIAS = np.array([0.92, -0.25])
 
 
@@ -83,7 +86,7 @@ def frames(theme):
     phase, participates, drift = motion(fld, idx)
     col, alpha0, size0 = pa.colours(fld, idx, theme=theme, base=0.90,
                                     accent=False)
-    size0 = size0 * 1.40 * (W / 470)
+    size0 = size0 * DOT_MULT
     xy0 = fld.xy[idx].copy()
 
     out = []
@@ -98,7 +101,7 @@ def frames(theme):
     return out
 
 
-def pad_uniform(ims, margin=26):
+def pad_uniform(ims, margin=50):
     box = None
     for im in ims:
         b = im.getchannel("A").point(lambda v: 255 if v > 3 else 0).getbbox()
@@ -125,10 +128,18 @@ def posterize(im, rgb_bits=5, a_bits=6):
 
 
 if __name__ == "__main__":
+    import pickle
     os.makedirs(OUT, exist_ok=True)
     sizes = {}
     for theme in ("light", "dark"):
-        ims = pad_uniform([posterize(im) for im in frames(theme)])
+        cache = os.path.join(HERE, f".frames_{theme}.pkl")
+        if os.path.exists(cache) and "--recache" not in sys.argv:
+            with open(cache, "rb") as fh:
+                ims = pickle.load(fh)
+        else:
+            ims = pad_uniform([posterize(im) for im in frames(theme)])
+            with open(cache, "wb") as fh:
+                pickle.dump(ims, fh)
         sizes[theme] = ims
     w = max(v[0].width for v in sizes.values())
     h = max(v[0].height for v in sizes.values())
