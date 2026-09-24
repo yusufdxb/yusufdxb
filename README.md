@@ -107,13 +107,15 @@ A guide dog has to be summonable. If the handler puts the harness down, sits on 
 ### FETCH (GuideDog-X)
 
 ![Repo](https://img.shields.io/badge/Repo-private-lightgrey?style=flat&logo=github)
-![Status](https://img.shields.io/badge/Status-Voice_demo_live_on_the_GO2-brightgreen?style=flat)
+![Status](https://img.shields.io/badge/Status-Voice_%2B_conversation_live_on_the_GO2-brightgreen?style=flat)
 
-A GO2 you talk to, with the brains running entirely on local hardware: no API key, no subscription, no cloud. You say *"Fetch, describe the room."* and the dog turns through a yaw-only scan, sends each view to a local vision-language model, aggregates the views into one grounded description, and says it out loud through its own speaker. The scene question is asked as closed yes/no prompts rather than open description, because an open "scene" field made the model return empty objects on live frames, and a per-view verification pass re-asks each view's top objects on the same image, which cut false objects on blank walls from 10 to 0 without losing a real one.
+A GO2 you talk to, with speech recognition, the language model and the vision-language model running on local hardware: no API key, no subscription. You say *"Fetch, describe the room."* and the dog turns through a yaw-only scan, sends each view to a local vision-language model, and speaks one grounded line per view through its own speaker, each turn waiting for the previous line to finish. The scene question is asked as closed yes/no prompts rather than open description, because an open "scene" field made the model return empty objects on live frames, and a per-view verification pass re-asks each view's top objects on the same image, which cut false objects on blank walls from 10 to 0 without losing a real one.
 
-The important part is what owns the wheels. A **safety envelope is the only publisher on `/cmd_vel`**: the language layer proposes, the envelope disposes, a wireless deadman on the remote's L1 gates motion by default, and the whole stack refuses to arm without it unless you pass an explicit flag that prints an error banner. Voice-triggered end to end on the real GO2 in 31.2 s with no degraded subsystems, after a live fix to the microphone gate that is now the launch default.
+It also holds a conversation. Weather, the time, small talk and follow-up questions (no wake word needed for 8 s after a reply) are answered from the dog's speaker, most in under 2.5 s, across armed sessions on the real GO2 in September. A chat reply can never call a tool, so small talk never moves the dog.
 
-`ROS 2 Humble` `Local VLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
+The important part is what owns the wheels. A **safety envelope is the only publisher on `/cmd_vel`**: the language layer proposes, the envelope disposes, and a wireless deadman on the remote's L1 gates motion by default. Spoken stop is off by default, because *"did you stop?"* once halted the dog mid-conversation; the handheld remote, a stick takeover and the envelope are the halt paths. Room scans run voice-triggered on the real GO2 in 22 to 31 s with no degraded subsystems.
+
+`ROS 2 Humble` `Local VLM + LLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
 
 
 ---
