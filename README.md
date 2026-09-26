@@ -65,18 +65,6 @@ The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real l
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
 
-### ivf
-
-[![Repo](https://img.shields.io/badge/GitHub-ivf-181717?style=flat&logo=github)](https://github.com/yusufdxb/ivf)
-![Stars](https://img.shields.io/github/stars/yusufdxb/ivf?style=flat&color=yellow)
-![Status](https://img.shields.io/badge/Status-0.1.0rc2-blue?style=flat)
-
-Offline acceptance and evidence for simulator experiments. You declare what "unchanged behavior" means in a YAML file (which signals, which tolerances and units, which controls must hold, what the minimum sample is). IVF checks the experiment was even valid before letting any result decide a verdict, then seals the manifest, signals, reasoning, provenance, and per-file SHA-256 digests into one auditable bundle.
-
-The flagship case is a real PhysX versus Newton/MJWarp cart-pole comparison whose recorded verdict is `FAIL`, with 5 of 9 oracles passing and 22 validity checks (18 pass, 3 unverifiable, 1 not applicable, 0 failed). Anyone can re-verify the shipped 13-file bundle from its seal, CPU only, with no GPU and no simulator install. IVF is not a benchmark: it does not measure throughput and does not designate a reference engine.
-
-`Python` `Isaac Sim 6.0` `PhysX` `Newton / MJWarp` `SHA-256 provenance` `CLI`
-
 ### supercombo-blindspot
 
 [![Repo](https://img.shields.io/badge/GitHub-supercombo--blindspot-181717?style=flat&logo=github)](https://github.com/yusufdxb/supercombo-blindspot)
@@ -145,7 +133,6 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 | **[helix](https://github.com/yusufdxb/helix)** | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
 | **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | 547 tests; real GO2 bag replay, not a live loop |
 | **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime OOD detection on a learned policy's internals, arbitrated into one health status with a safe-fallback layer. C++ managed-lifecycle node. | 295 tests, synthetic only |
-| **[ivf](https://github.com/yusufdxb/ivf)** | Sealed, re-verifiable acceptance evidence for simulator experiments. | `0.1.0rc2` |
 
 ---
 
