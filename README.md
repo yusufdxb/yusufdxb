@@ -78,6 +78,19 @@ Silently. The study rests on a parity-controlled reimplementation of v0.9.7 infe
 
 `ONNX Runtime` `CARLA` `OOD Detection` `Recurrent State` `openpilot`
 
+### av2-city-shift
+
+[![Repo](https://img.shields.io/badge/GitHub-av2--city--shift-181717?style=flat&logo=github)](https://github.com/yusufdxb/av2-city-shift)
+![Stars](https://img.shields.io/github/stars/yusufdxb/av2-city-shift?style=flat&color=yellow)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/X_JOo6AltDY)
+![Status](https://img.shields.io/badge/Status-Pre--registered%2C_4_stages_audited-brightgreen?style=flat)
+
+A pre-registered study of a learned trajectory predictor on Argoverse 2, carried from open-loop accuracy all the way to what the car does. Holding out one city at a time costs only about 5% accuracy, but in closed loop the predictor makes the planner phantom-brake for parked cars: it was trained on "focal" agents, which are picked for being interesting, so it learned that a stopped car is about to move.
+
+Giving stopped agents a constant-velocity forecast cut unnecessary hard brakes by 45% on 8,140 fresh scenes that no compared model trained on, with collisions inside the registered margin, while a dose-matched sham that treats random agents instead showed no detectable effect. Two learned fixes were registered, run, and killed, and are published next to the win. Every registered decision is re-derived from released per-row tables by independent audit scripts, and the serving path runs in TensorRT FP16 at 6.66 ms per replan.
+
+`PyTorch` `Transformers` `TensorRT` `Argoverse 2` `Closed-Loop Evaluation` `Pre-registration`
+
 ---
 
 ## Active M.S. Research
@@ -141,6 +154,7 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 | Project | What it does | Status |
 |---|---|---|
 | **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** | Does a production L2 driving model know when it is blind? | writeup published, not submitted |
+| **[av2-city-shift](https://github.com/yusufdxb/av2-city-shift)** | Does a trajectory predictor know when it is in a new city, and does its error reach the car's driving? Pre-registered, closed loop, TensorRT. | stages 1 to 4 complete, audited |
 | **[openvocab-tsdf](https://github.com/yusufdxb/openvocab-tsdf)** | GPU-accelerated open-vocabulary 3D mapping: build a TSDF and query it in natural language. | live RGB-D mapping end-to-end |
 | **[physx-newton-bench](https://github.com/yusufdxb/physx-newton-bench)** | PhysX vs Newton/MJWarp in Isaac Lab: throughput scaling, per-process VRAM, 10-seed learning curves. | published |
 | **[inspectnet-cx](https://github.com/yusufdxb/inspectnet-cx)** | Reproducible industrial anomaly-inspection scaffold on an MVTec AD baseline. | 80 tests, CPU-only parity |
