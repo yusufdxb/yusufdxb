@@ -32,7 +32,6 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 ### come-here
 
 [![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
-![Stars](https://img.shields.io/github/stars/yusufdxb/come-here?style=flat&color=yellow)
 ![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
 
 Real-robot assistive autonomy on the Unitree GO2. Someone says *"come here"* from outside the camera's field of view and the dog has to solve the whole problem, onboard the Jetson: **hear the caller, localize them, turn, visually acquire them, approach, stop, sit.** The ReSpeaker array's firmware DOA register gives the bearing (software SRP-PHAT was tried on the mounted array and failed, which is itself the finding), a bounded whole-token Whisper matcher gates the wake so ordinary lab talk does not trigger it, the turn closes on `/utlidar/robot_odom` yaw, then YOLO11n takes over for acquisition, alignment, approach, and a bounding-box stop at 75% of frame height.
@@ -44,7 +43,6 @@ Two live end-to-end hardware runs on the GO2, one of them a blind trial with the
 ### helix
 
 [![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
-![Stars](https://img.shields.io/github/stars/yusufdxb/helix?style=flat&color=yellow)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
 ![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
 
@@ -57,7 +55,6 @@ Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab ses
 ### go2-phoenix
 
 [![Repo](https://img.shields.io/badge/GitHub-go2--phoenix-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-phoenix)
-![Stars](https://img.shields.io/github/stars/yusufdxb/go2-phoenix?style=flat&color=yellow)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Nu0oWyJJbEM)
 ![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
 
@@ -68,7 +65,6 @@ The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real l
 ### supercombo-blindspot
 
 [![Repo](https://img.shields.io/badge/GitHub-supercombo--blindspot-181717?style=flat&logo=github)](https://github.com/yusufdxb/supercombo-blindspot)
-![Stars](https://img.shields.io/github/stars/yusufdxb/supercombo-blindspot?style=flat&color=yellow)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/tnM18XGbNMY)
 [![Writeup](https://img.shields.io/badge/Writeup-PDF-8A2BE2?style=flat)](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf)
 
@@ -81,7 +77,6 @@ Silently. The study rests on a parity-controlled reimplementation of v0.9.7 infe
 ### av2-city-shift
 
 [![Repo](https://img.shields.io/badge/GitHub-av2--city--shift-181717?style=flat&logo=github)](https://github.com/yusufdxb/av2-city-shift)
-![Stars](https://img.shields.io/github/stars/yusufdxb/av2-city-shift?style=flat&color=yellow)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/X_JOo6AltDY)
 ![Status](https://img.shields.io/badge/Status-Pre--registered%2C_4_stages_audited-brightgreen?style=flat)
 
@@ -94,7 +89,6 @@ Giving stopped agents a constant-velocity forecast cut unnecessary hard brakes b
 ### kestrel-rt
 
 [![Repo](https://img.shields.io/badge/GitHub-kestrel--rt-181717?style=flat&logo=github)](https://github.com/yusufdxb/kestrel-rt)
-![Stars](https://img.shields.io/github/stars/yusufdxb/kestrel-rt?style=flat&color=yellow)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/AfcJQIyyuUY)
 ![Status](https://img.shields.io/badge/Status-v1.0%2C_hardware--validated-brightgreen?style=flat)
 
@@ -111,7 +105,6 @@ Phase 2 moves networking onto the board's ESP32-S3 and treats it as untrusted, b
 ### GO2 Seeing-Eye Dog
 
 [![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
-![Stars](https://img.shields.io/github/stars/yusufdxb/GO2-seeing-eye-dog?style=flat&color=yellow)
 ![Status](https://img.shields.io/badge/Status-Active_Research-orange?style=flat)
 
 A guide dog has to be summonable. If the handler puts the harness down, sits on a bench, and then wants the dog back, the dog finds them by voice, not by an app or a joystick. This repository closes the **recall** half of that interaction on real hardware: a four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and publishes a Nav2 goal.
