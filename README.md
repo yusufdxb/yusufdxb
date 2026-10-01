@@ -91,6 +91,19 @@ Giving stopped agents a constant-velocity forecast cut unnecessary hard brakes b
 
 `PyTorch` `Transformers` `TensorRT` `Argoverse 2` `Closed-Loop Evaluation` `Pre-registration`
 
+### kestrel-rt
+
+[![Repo](https://img.shields.io/badge/GitHub-kestrel--rt-181717?style=flat&logo=github)](https://github.com/yusufdxb/kestrel-rt)
+![Stars](https://img.shields.io/github/stars/yusufdxb/kestrel-rt?style=flat&color=yellow)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/AfcJQIyyuUY)
+![Status](https://img.shields.io/badge/Status-v1.0%2C_hardware--validated-brightgreen?style=flat)
+
+A zero-allocation bare-metal real-time runtime in C for a 48 MHz Arm Cortex-M4F, written from the reset vector up: startup and linker script, a tickless fixed-priority scheduler, PendSV context switching, MPU task isolation, a voting watchdog, crash capture, binary tracing and register-level DMA drivers. On the physical board it ran 10,429,500 control periods without a deadline miss and handled 17/17 injected faults, and it was benchmarked on the same workload against FreeRTOS, Zephyr and a superloop. FreeRTOS had lower start latency; Kestrel kept its critical tasks on time under 7x overload, where the FreeRTOS baseline starved them.
+
+Phase 2 moves networking onto the board's ESP32-S3 and treats it as untrusted, behind a budgeted UART/DMA mailbox with sessions, replay rejection and rate limiting. Across 10,003,440 control periods with 11 forced ESP crashes, plus Wi-Fi floods and 15,000 malformed frames, the real-time side had 0 resets and 0 critical deadline misses, at a measured +3.3 µs p99 cost. It is fault isolation, not a security boundary: the ESP still controls the reset and debug lines.
+
+`C` `ARM Cortex-M4F` `Bare Metal` `RTOS Design` `MPU` `DMA` `ESP32-S3` `Fault Injection`
+
 ---
 
 ## Active M.S. Research
@@ -178,6 +191,7 @@ Where I started, and still the most satisfying when it physically moves.
 
 | Project | What it does |
 |---|---|
+| **[kestrel-rt](https://github.com/yusufdxb/kestrel-rt)** | Bare-metal Cortex-M4F runtime written from the reset vector up, with an ESP32-S3 network chip isolated behind a budgeted link. Featured above. |
 | **[RADAR-Telepresence-Robot](https://github.com/yusufdxb/RADAR-Telepresence-Robot)** | Medical telepresence robot: remote teleop, live video with pan-tilt, and real-time SpO₂ / heart-rate monitoring through one Qt 6 operator console. |
 | **[TicTacToe-3link-robot](https://github.com/yusufdxb/TicTacToe-3link-robot)** | A 3-DOF arm that computes closed-form IK to physically draw X's and O's while a Minimax AI plays optimally. |
 | **[EcoSort-bin](https://github.com/yusufdxb/EcoSort-bin)** | Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino classifies and sorts waste. Finite-state control, no ML. |
