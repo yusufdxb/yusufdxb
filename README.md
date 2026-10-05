@@ -32,7 +32,10 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 ### come-here
 
 [![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/EwJF_jjldvY)
 ![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
+
+<a href="https://youtu.be/EwJF_jjldvY"><img src="https://img.youtube.com/vi/EwJF_jjldvY/maxresdefault.jpg" width="640" alt="come-here demo video: three live runs on a Unitree GO2"></a>
 
 Real-robot assistive autonomy on the Unitree GO2. Someone says *"come here"* from outside the camera's field of view and the dog has to solve the whole problem, onboard the Jetson: **hear the caller, localize them, turn, visually acquire them, approach, stop, sit.** The ReSpeaker array's firmware DOA register gives the bearing (software SRP-PHAT was tried on the mounted array and failed, which is itself the finding), a bounded whole-token Whisper matcher gates the wake so ordinary lab talk does not trigger it, the turn closes on `/utlidar/robot_odom` yaw, then YOLO11n takes over for acquisition, alignment, approach, and a bounding-box stop at 75% of frame height.
 
