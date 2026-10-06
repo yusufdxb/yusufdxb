@@ -21,7 +21,7 @@
 
 ---
 
-I build physical autonomy first, then the reliability systems needed to trust it. Come Here is the real-robot baseline: a spoken command becomes a localized caller, a turn, a visual acquisition, an approach, and a sit. My M.S. thesis, *Safe Assistive Quadruped Autonomy*, researches how an assistive robot should interpret and act on human commands when blindly obeying them could be unsafe. Underneath is the layer that notices when learned components fail quietly: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence you can re-verify a year later.
+I build physical autonomy first, then the reliability systems needed to trust it. Come Here is the clearest real-robot example: a spoken command becomes a localized caller, a turn, a visual acquisition, an approach, and a sit. My M.S. thesis, *Safe Assistive Quadruped Autonomy*, researches MOSAIC, a language-model layer that turns spoken requests into sequences of robot skills under an independent safety guardian, and guiding a low-vision handler to a destination under a safety envelope that alone commands motion. Underneath is the layer that notices when learned components fail quietly: fault detection and recovery on a live robot, deploy-time parity gates, out-of-distribution monitoring on policy internals, and acceptance evidence you can re-verify a year later.
 
 I work across the stack: C++ control loops, Python perception and RL, ROS 2 architecture, embedded firmware, CAD, and the GUIs on top. Most of it runs on a Unitree GO2. Every repo below states what has actually run on hardware and what has not, because that distinction is the whole job.
 
