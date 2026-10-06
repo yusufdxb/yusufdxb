@@ -125,6 +125,8 @@ The important part is what owns the wheels. A **safety envelope is the only publ
 
 `ROS 2 Humble` `Local VLM + LLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
 
+*Up next: **MOSAIC**, a language-model layer that chains skills like these into multi-step tasks, while an independent safety guardian keeps a hand on the leash. Stay tuned.*
+
 
 ---
 
