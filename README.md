@@ -154,7 +154,7 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 |---|---|---|
 | **[helix](https://github.com/yusufdxb/helix)** | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
 | **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | 547 tests; real GO2 bag replay, not a live loop |
-| **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime OOD detection on a learned policy's internals, arbitrated into one health status with a safe-fallback layer. C++ managed-lifecycle node. | 295 tests, synthetic only |
+| **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime health monitor for learned policies: reads a policy's internals and the robot's own health signals and arbitrates them into one status with a safe-fallback layer. All C++. | onboard GO2, shadow mode: induced faults reach STOP 5/5, 0 false alarms in 5 min |
 
 ---
 
