@@ -115,6 +115,7 @@ A guide dog has to be summonable. If the handler puts the harness down, sits on 
 ### FETCH (GuideDog-X)
 
 ![Repo](https://img.shields.io/badge/Repo-private-lightgrey?style=flat&logo=github)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/06XPfwwHZ3M)
 ![Status](https://img.shields.io/badge/Status-Voice_%2B_conversation_live_on_the_GO2-brightgreen?style=flat)
 
 A GO2 you talk to, with speech recognition, the language model and the vision-language model running on local hardware: no API key, no subscription. You say *"Fetch, describe the room."* and the dog turns through a yaw-only scan, sends each view to a local vision-language model, and speaks one grounded line per view through its own speaker, each turn waiting for the previous line to finish. The scene question is asked as closed yes/no prompts rather than open description, because an open "scene" field made the model return empty objects on live frames, and a per-view verification pass re-asks each view's top objects on the same image, which cut false objects on blank walls from 10 to 0 without losing a real one.
