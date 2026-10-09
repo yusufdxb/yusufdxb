@@ -56,7 +56,7 @@ Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab ses
 ### go2-phoenix
 
 [![Repo](https://img.shields.io/badge/GitHub-go2--phoenix-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-phoenix)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Nu0oWyJJbEM)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/eCzeuW2WKgY)
 ![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
 
 The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real learning for locomotion. A policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson. The shipped stand policy (`stand-v3-h25`) evaluates at 32/32 success in simulation, with per-step slew saturation at 3.30% nominal and 2.91% under full domain randomization against a <5% gate.
