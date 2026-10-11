@@ -45,9 +45,11 @@ Two live end-to-end hardware runs on the GO2, one of them a blind trial with the
 
 [![Repo](https://img.shields.io/badge/GitHub-go2--phoenix-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-phoenix)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/eCzeuW2WKgY)
-![Status](https://img.shields.io/badge/Status-Gate_7_open-orange?style=flat)
+![Status](https://img.shields.io/badge/Status-Walking_on_the_GO2-yellowgreen?style=flat)
 
-The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real learning for locomotion. A policy trains in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. Failures captured on hardware replay in simulation under randomized physics and feed a fine-tuning curriculum. The deploy stack has run end to end on the real robot, on the Jetson. The shipped stand policy (`stand-v3-h25`) evaluates at 32/32 success in simulation, with per-step slew saturation at 3.30% nominal and 2.91% under full domain randomization against a <5% gate.
+The learned-control layer under the GO2 autonomy work: closed-loop sim-to-real learning for locomotion. A policy trains on 8,192 simulated GO2s in Isaac Lab, exports to ONNX through a **torch/onnxruntime parity gate** that refuses to ship a checkpoint whose deploy-time numerics drift outside tolerance, then runs behind a **fail-closed** ROS 2 safety layer with a shared slew cap. On the real robot it gets up from lying flat, turns, sits, and takes its first untethered steps on a free floor. It passed every live stand gate at zero command (2 s, 5 s and three 10 s windows, body tilt under 0.09 rad, no safety-layer interventions).
+
+It walks, but under-tracks: about 60% of the commanded forward distance and 20% of the commanded turn, against 89% and 76% for the same profile in MuJoCo. The cause is measured, not guessed. An active probe on the hung robot found 0.17-0.96 N m of static joint friction that the training simulator never modelled, and replaying the walk in MuJoCo at 1.25-1.5x the measured values matches the robot. Retraining with joint-friction randomization around those values is next.
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
 
