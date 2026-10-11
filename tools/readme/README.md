@@ -10,6 +10,7 @@ gorender.py         area-weighted surface sampling, camera, splatting, shading
 particles.py        the particle treatment: which samples are drawn, how dark,
                     how large, per theme
 build_hero.py       the reconstruction loop -> assets/readme/hero-{light,dark}.webp
+build_icon.py       the same loop at icon scale -> assets/readme/icon-{light,dark}.webp
 ```
 
 ## Where the geometry comes from

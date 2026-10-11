@@ -1,10 +1,5 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/hero-dark.webp">
-  <img width="760" src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/hero-light.webp" alt="A Unitree GO2 quadruped resolving out of drifting particles.">
-</picture>
-
 <h1>Yusuf Guenena</h1>
 
 <p><strong>I build dependable autonomy for quadruped robots working around people.</strong></p>
@@ -29,7 +24,7 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 
 ## Featured Work
 
-### come-here
+### <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-dark.webp"><img height="40" align="absmiddle" src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-light.webp" alt="Unitree GO2"></picture> come-here
 
 [![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Ky4fMO8ooio)
@@ -126,17 +121,6 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 
 ---
 
-## Falsified Hypotheses
-
-Some projects exist because the idea did not survive contact with measurement. They stay public with their full evidence trail, because the measurement is the contribution.
-
-| Project | The hypothesis | What happened |
-|---|---|---|
-| **[ipfd](https://github.com/yusufdxb/ipfd)** | Rewind a simulator to step `t`, re-run it, and treat that branch as what the uninterrupted episode would have done. | Branches matching the reference on exposed simulator state, on the immediate observation, *and* on the exact replayed action sequence still reached different terminal outcomes. The preregistered positive control needed to cut disagreement by 50% and cut it by 38.9% (18/444 to 11/444), so the stopping rule fired. Archived negative result. |
-| **[ashfall](https://github.com/yusufdxb/ashfall)** | Reproduce a locomotion failure from a *named physical cause*, then repair the policy around that phenotype. | The earlier failure-curriculum experiment was retracted after an audit found it seeded nominal states, so the treatment was never delivered and it says nothing about failure curricula either way. What replaced it is a causal gate: an intervention counts only if it is verified by simulator readback, departs from its matched control by more than nominal replicates depart from each other, and produces the intended phenotype in the treatment and not the control. H0 is **not established**, and repair is not allowed to run until it is. |
-
----
-
 ## Hardware & Embedded
 
 Where I started, and still the most satisfying when it physically moves.
@@ -174,7 +158,7 @@ Where I started, and still the most satisfying when it physically moves.
 | **Perception** | YOLOv8, OpenCV, RealSense D435i, Whisper ASR, GCC-PHAT, open-vocab 3D mapping |
 | **Reliability** | Fault detection, incident forensics, fail-closed safety envelopes, acceptance evidence, paired statistical evaluation |
 | **Embedded** | Jetson Orin NX, Arduino, Raspberry Pi, sensor/actuator integration, firmware |
-| **Languages** | C++17, Python 3, MATLAB, C |
+| **Languages** | C++17, Python 3, Rust, MATLAB, C |
 | **Tools** | Git, Docker, CMake, colcon, Qt 6, Fusion 360 |
 
 ---
