@@ -41,18 +41,6 @@ Two live end-to-end hardware runs on the GO2, one of them a blind trial with the
 
 `ROS 2 Humble` `ReSpeaker 4-Mic Array` `Whisper ASR` `YOLO11n` `systemd` `Jetson Orin NX` `Unitree GO2`
 
-### helix
-
-[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
-![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
-
-Runtime failure detection and recovery for the GO2 autonomy stack, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. The C++ port of the hot-path anomaly detector has landed (`helix_sensing_cpp`): a 30-minute hardware parity run measured -56% RSS and -60% CPU against the Python node, and it stays launch-gated behind `use_cpp_anomaly=false` until parity is re-confirmed.
-
-Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: a 439 s idle run producing 30 anomalies into 14 recovery hints into 14 audited recovery actions, with no allowlist or cooldown violation. [`dashboard/helix_console.html`](https://github.com/yusufdxb/helix/tree/main/dashboard) replays that session tier by tier from the extracted telemetry, offline and with no build step.
-
-`ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
-
 ### go2-phoenix
 
 [![Repo](https://img.shields.io/badge/GitHub-go2--phoenix-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-phoenix)
@@ -74,6 +62,18 @@ Independent failure-awareness research, separate from the quadruped work: a dist
 Silently. The study rests on a parity-controlled reimplementation of v0.9.7 inference that agrees with comma's own reference output on 100% of 1159 real frames within ±0.5 m/s², so the negative result is attributable to the model and not the harness. Under shift, 8 of 10 tracked output readouts fall below 1% of real activity, the recurrent state contracts to a point, and the exported uncertainty heads rise only 1.20-1.84x and never leave their nominal real-driving range. An internal recurrent signal does encode the failure and is recoverable, but the model never exposes it. The result is also version-specific: on v0.9.6 the silent freeze does not reproduce, and the model fails by chaotic amplification instead. [Full writeup](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf), not submitted.
 
 `ONNX Runtime` `CARLA` `OOD Detection` `Recurrent State` `openpilot`
+
+### helix
+
+[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
+[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
+![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
+
+Runtime failure detection and recovery for the GO2 autonomy stack, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. The C++ port of the hot-path anomaly detector has landed (`helix_sensing_cpp`): a 30-minute hardware parity run measured -56% RSS and -60% CPU against the Python node, and it stays launch-gated behind `use_cpp_anomaly=false` until parity is re-confirmed.
+
+Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: a 439 s idle run producing 30 anomalies into 14 recovery hints into 14 audited recovery actions, with no allowlist or cooldown violation. [`dashboard/helix_console.html`](https://github.com/yusufdxb/helix/tree/main/dashboard) replays that session tier by tier from the extracted telemetry, offline and with no build step.
+
+`ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
 
 ### av2-city-shift
 
