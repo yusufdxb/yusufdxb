@@ -53,67 +53,6 @@ It walks, but under-tracks: about 60% of the commanded forward distance and 20% 
 
 `Isaac Lab` `PPO` `ONNX` `ROS 2` `Sim-to-Real` `Unitree GO2`
 
-### supercombo-blindspot
-
-[![Repo](https://img.shields.io/badge/GitHub-supercombo--blindspot-181717?style=flat&logo=github)](https://github.com/yusufdxb/supercombo-blindspot)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/tnM18XGbNMY)
-[![Writeup](https://img.shields.io/badge/Writeup-PDF-8A2BE2?style=flat)](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf)
-
-Independent failure-awareness research, separate from the quadruped work: a distribution-shift teardown of the neural network that drives openpilot, an L2 driver-assistance system deployed on public roads. One question: presented with input outside its training distribution, does it fail conspicuously or silently?
-
-Silently. The study rests on a parity-controlled reimplementation of v0.9.7 inference that agrees with comma's own reference output on 100% of 1159 real frames within ±0.5 m/s², so the negative result is attributable to the model and not the harness. Under shift, 8 of 10 tracked output readouts fall below 1% of real activity, the recurrent state contracts to a point, and the exported uncertainty heads rise only 1.20-1.84x and never leave their nominal real-driving range. An internal recurrent signal does encode the failure and is recoverable, but the model never exposes it. The result is also version-specific: on v0.9.6 the silent freeze does not reproduce, and the model fails by chaotic amplification instead. [Full writeup](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf), not submitted.
-
-`ONNX Runtime` `CARLA` `OOD Detection` `Recurrent State` `openpilot`
-
-### helix
-
-[![Repo](https://img.shields.io/badge/GitHub-helix-181717?style=flat&logo=github)](https://github.com/yusufdxb/helix)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/PbKXB91-NSY)
-![Status](https://img.shields.io/badge/Status-Validated_on_live_GO2-brightgreen?style=flat)
-
-Runtime failure detection and recovery for the GO2 autonomy stack, built as a four-tier loop. **Sense**: lifecycle nodes emit structured `FaultEvent`s from a rolling Z-score detector, a heartbeat monitor, and a log parser. **Diagnose**: deterministic rules turn faults into `RecoveryHint`s. **Recover**: a single `cmd_vel` publisher behind a strict allowlist and cooldown. **Explain**: an advisory local LLM that is never on the safety-critical path. The C++ port of the hot-path anomaly detector has landed (`helix_sensing_cpp`): a 30-minute hardware parity run measured -56% RSS and -60% CPU against the Python node, and it stays launch-gated behind `use_cpp_anomaly=false` until parity is re-confirmed.
-
-Validated on a live Unitree GO2 and Jetson Orin NX across eight hardware lab sessions. The Session 8 bag runs the loop end to end: a 439 s idle run producing 30 anomalies into 14 recovery hints into 14 audited recovery actions, with no allowlist or cooldown violation. [`dashboard/helix_console.html`](https://github.com/yusufdxb/helix/tree/main/dashboard) replays that session tier by tier from the extracted telemetry, offline and with no build step.
-
-`ROS 2 Humble` `C++17` `Lifecycle Nodes` `Jetson Orin NX` `Unitree GO2` `Local LLM`
-
-### av2-city-shift
-
-[![Repo](https://img.shields.io/badge/GitHub-av2--city--shift-181717?style=flat&logo=github)](https://github.com/yusufdxb/av2-city-shift)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/X_JOo6AltDY)
-![Status](https://img.shields.io/badge/Status-Pre--registered%2C_4_stages_audited-brightgreen?style=flat)
-
-A pre-registered study of a learned trajectory predictor on Argoverse 2, carried from open-loop accuracy all the way to what the car does. Holding out one city at a time costs only about 5% accuracy, but in closed loop the predictor makes the planner phantom-brake for parked cars: it was trained on "focal" agents, which are picked for being interesting, so it learned that a stopped car is about to move.
-
-Giving stopped agents a constant-velocity forecast cut unnecessary hard brakes by 45% on 8,140 fresh scenes that no compared model trained on, with collisions inside the registered margin, while a dose-matched sham that treats random agents instead showed no detectable effect. Two learned fixes were registered, run, and killed, and are published next to the win. Every registered decision is re-derived from released per-row tables by independent audit scripts, and the serving path runs in TensorRT FP16 at 6.66 ms per replan.
-
-`PyTorch` `Transformers` `TensorRT` `Argoverse 2` `Closed-Loop Evaluation` `Pre-registration`
-
-### kestrel-rt
-
-[![Repo](https://img.shields.io/badge/GitHub-kestrel--rt-181717?style=flat&logo=github)](https://github.com/yusufdxb/kestrel-rt)
-[![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/AfcJQIyyuUY)
-![Status](https://img.shields.io/badge/Status-v1.0%2C_hardware--validated-brightgreen?style=flat)
-
-A zero-allocation bare-metal real-time runtime in C for a 48 MHz Arm Cortex-M4F, written from the reset vector up: startup and linker script, a tickless fixed-priority scheduler, PendSV context switching, MPU task isolation, a voting watchdog, crash capture, binary tracing and register-level DMA drivers. On the physical board it ran 10,429,500 control periods without a deadline miss and handled 17/17 injected faults, and it was benchmarked on the same workload against FreeRTOS, Zephyr and a superloop. FreeRTOS had lower start latency; Kestrel kept its critical tasks on time under 7x overload, where the FreeRTOS baseline starved them.
-
-Phase 2 moves networking onto the board's ESP32-S3 and treats it as untrusted, behind a budgeted UART/DMA mailbox with sessions, replay rejection and rate limiting. Across 10,003,440 control periods with 11 forced ESP crashes, plus Wi-Fi floods and 15,000 malformed frames, the real-time side had 0 resets and 0 critical deadline misses, at a measured +3.3 µs p99 cost. It is fault isolation, not a security boundary: the ESP still controls the reset and debug lines.
-
-`C` `ARM Cortex-M4F` `Bare Metal` `RTOS Design` `MPU` `DMA` `ESP32-S3` `Fault Injection`
-
----
-
-## Active M.S. Research
-
-### GO2 Seeing-Eye Dog
-
-[![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
-![Status](https://img.shields.io/badge/Status-Active_Research-orange?style=flat)
-
-A guide dog has to be summonable. If the handler puts the harness down, sits on a bench, and then wants the dog back, the dog finds them by voice, not by an app or a joystick. This repository closes the **recall** half of that interaction on real hardware: a four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and publishes a Nav2 goal.
-
-`ROS 2 Humble` `GCC-PHAT` `Whisper ASR` `YOLOv8` `RealSense D435i` `Nav2` `C++ Lifecycle Node`
-
 ### FETCH (GuideDog-X)
 
 ![Repo](https://img.shields.io/badge/Repo-private-lightgrey?style=flat&logo=github)
@@ -128,7 +67,20 @@ The important part is what owns the wheels. A **safety envelope is the only publ
 
 `ROS 2 Humble` `Local VLM + LLM (Ollama)` `Whisper ASR` `ReSpeaker 4-Mic Array` `Safety Envelope` `Jetson Orin NX` `Unitree GO2`
 
-*Up next: **MOSAIC**, a language-model layer that chains skills like these into multi-step tasks, while an independent safety guardian keeps a hand on the leash. Stay tuned.*
+---
+
+## Active M.S. Research
+
+### GO2 Seeing-Eye Dog
+
+[![Repo](https://img.shields.io/badge/GitHub-GO2--seeing--eye--dog-181717?style=flat&logo=github)](https://github.com/yusufdxb/GO2-seeing-eye-dog)
+![Status](https://img.shields.io/badge/Status-Active_Research-orange?style=flat)
+
+A guide dog has to be summonable. If the handler puts the harness down, sits on a bench, and then wants the dog back, the dog finds them by voice, not by an app or a joystick. This repository closes the **recall** half of that interaction on real hardware: a four-channel mic array gives a GCC-PHAT bearing, Whisper parses the command, YOLOv8 plus depth back-projection gives 3D person poses, and a fused audio-visual score must hold across five consecutive frames before the target locks and publishes a Nav2 goal.
+
+`ROS 2 Humble` `GCC-PHAT` `Whisper ASR` `YOLOv8` `RealSense D435i` `Nav2` `C++ Lifecycle Node`
+
+*Up next: **MOSAIC**, a language-model layer that chains skills like FETCH's into multi-step tasks, while an independent safety guardian keeps a hand on the leash. Stay tuned.*
 
 
 ---
@@ -140,6 +92,7 @@ A connected body of work turning a stock quadruped into something that learns, n
 | Project | What it does | Status |
 |---|---|---|
 | **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | full recall loop live on the GO2 |
+| **[go2-phoenix](https://github.com/yusufdxb/go2-phoenix)** | Sim-to-real locomotion learning: an Isaac Lab policy shipped through an ONNX parity gate and a fail-closed ROS 2 safety layer, built to replay hardware failures in simulation and fine-tune on them. | stands and walks on the GO2; joint-friction tracking gap measured, retraining next |
 | **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths through an explainable Nav2 overlay. | hardware-unverified |
 | **[go2-semantic-nav](https://github.com/yusufdxb/go2-semantic-nav)** | Open-vocab 3D semantic scene graph feeding a language-grounded Nav2 overlay on a Jetson. | workstation eval landed, robot eval pending |
 | **[go2-audio](https://github.com/yusufdxb/go2-audio)** | Real microphone audio off a GO2 over WebRTC, because the DDS `/audiosender` topic is broken. | |
@@ -155,7 +108,7 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 
 | Project | What it does | Status |
 |---|---|---|
-| **[helix](https://github.com/yusufdxb/helix)** | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
+| **[helix](https://github.com/yusufdxb/helix)** · [demo](https://youtu.be/PbKXB91-NSY) | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
 | **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | 547 tests; real GO2 bag replay, not a live loop |
 | **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime health monitor for learned policies: reads a policy's internals and the robot's own health signals and arbitrates them into one status with a safe-fallback layer. All C++. | onboard GO2, shadow mode: induced faults reach STOP 5/5, 0 false alarms in 5 min |
 
@@ -165,8 +118,8 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 
 | Project | What it does | Status |
 |---|---|---|
-| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** | Does a production L2 driving model know when it is blind? | writeup published, not submitted |
-| **[av2-city-shift](https://github.com/yusufdxb/av2-city-shift)** | Does a trajectory predictor know when it is in a new city, and does its error reach the car's driving? Pre-registered, closed loop, TensorRT. | stages 1 to 4 complete, audited |
+| **[supercombo-blindspot](https://github.com/yusufdxb/supercombo-blindspot)** · [demo](https://youtu.be/tnM18XGbNMY) | Does a production L2 driving model know when it is blind? | [writeup](https://yusufdxb.github.io/papers/silent-collapse-distribution-shift-teardown.pdf) published, not submitted |
+| **[av2-city-shift](https://github.com/yusufdxb/av2-city-shift)** · [demo](https://youtu.be/X_JOo6AltDY) | Does a trajectory predictor know when it is in a new city, and does its error reach the car's driving? Pre-registered, closed loop, TensorRT. | stages 1 to 4 complete, audited |
 | **[openvocab-tsdf](https://github.com/yusufdxb/openvocab-tsdf)** | GPU-accelerated open-vocabulary 3D mapping: build a TSDF and query it in natural language. | live RGB-D mapping end-to-end |
 | **[physx-newton-bench](https://github.com/yusufdxb/physx-newton-bench)** | PhysX vs Newton/MJWarp in Isaac Lab: throughput scaling, per-process VRAM, 10-seed learning curves. | published |
 | **[inspectnet-cx](https://github.com/yusufdxb/inspectnet-cx)** | Reproducible industrial anomaly-inspection scaffold on an MVTec AD baseline. | 80 tests, CPU-only parity |
@@ -190,7 +143,7 @@ Where I started, and still the most satisfying when it physically moves.
 
 | Project | What it does |
 |---|---|
-| **[kestrel-rt](https://github.com/yusufdxb/kestrel-rt)** | Bare-metal Cortex-M4F runtime written from the reset vector up, with an ESP32-S3 network chip isolated behind a budgeted link. Featured above. |
+| **[kestrel-rt](https://github.com/yusufdxb/kestrel-rt)** · [demo](https://youtu.be/AfcJQIyyuUY) | Bare-metal Cortex-M4F runtime written from the reset vector up, with an ESP32-S3 network chip isolated behind a budgeted link. 10.4M control periods with no deadline miss on the physical board. |
 | **[RADAR-Telepresence-Robot](https://github.com/yusufdxb/RADAR-Telepresence-Robot)** | Medical telepresence robot: remote teleop, live video with pan-tilt, and real-time SpO₂ / heart-rate monitoring through one Qt 6 operator console. |
 | **[TicTacToe-3link-robot](https://github.com/yusufdxb/TicTacToe-3link-robot)** | A 3-DOF arm that computes closed-form IK to physically draw X's and O's while a Minimax AI plays optimally. |
 | **[EcoSort-bin](https://github.com/yusufdxb/EcoSort-bin)** | Multi-sensor fusion (weight + color + IR + ultrasonic) on an Arduino classifies and sorts waste. Finite-state control, no ML. |
