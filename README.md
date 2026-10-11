@@ -24,7 +24,7 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 
 ## Featured Work
 
-### come-here <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-dark.webp"><img height="40" align="absmiddle" src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-light.webp" alt="Unitree GO2"></picture>
+### come-here <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-dark.webp"><img height="40" align="right" src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-light.webp" alt="Unitree GO2"></picture>
 
 [![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Ky4fMO8ooio)
