@@ -26,7 +26,7 @@ I work across the stack: C++ control loops, Python perception and RL, ROS 2 arch
 
 ### come-here <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-dark.webp"><img height="40" align="right" src="https://raw.githubusercontent.com/yusufdxb/yusufdxb/main/assets/readme/icon-light.webp" alt="Unitree GO2"></picture>
 
-[![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/come-here)
+[![Repo](https://img.shields.io/badge/GitHub-come--here-181717?style=flat&logo=github)](https://github.com/yusufdxb/go2-come-here)
 [![Demo](https://img.shields.io/badge/%E2%96%B6_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Ky4fMO8ooio)
 ![Status](https://img.shields.io/badge/Status-Live_loop_on_the_GO2-brightgreen?style=flat)
 
@@ -86,7 +86,7 @@ A connected body of work turning a stock quadruped into something that learns, n
 
 | Project | What it does | Status |
 |---|---|---|
-| **[come-here](https://github.com/yusufdxb/come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | full recall loop live on the GO2 |
+| **[come-here](https://github.com/yusufdxb/go2-come-here)** | Hears "come here," localizes the voice, turns, finds the person, and walks to them. Audio-visual approach in one loop. | full recall loop live on the GO2 |
 | **[go2-phoenix](https://github.com/yusufdxb/go2-phoenix)** | Sim-to-real locomotion learning: an Isaac Lab policy shipped through an ONNX parity gate and a fail-closed ROS 2 safety layer, built to replay hardware failures in simulation and fine-tune on them. | stands and walks on the GO2; joint-friction tracking gap measured, retraining next |
 | **[riskgraph-go2](https://github.com/yusufdxb/riskgraph-go2)** | Persistent route-risk memory: the robot remembers where things went wrong and scores safer paths through an explainable Nav2 overlay. | hardware-unverified |
 | **[go2-semantic-nav](https://github.com/yusufdxb/go2-semantic-nav)** | Open-vocab 3D semantic scene graph feeding a language-grounded Nav2 overlay on a Jetson. | workstation eval landed, robot eval pending |
