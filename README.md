@@ -106,7 +106,7 @@ The infrastructure under the autonomy: it tells you *when your robot is about to
 | **[helix](https://github.com/yusufdxb/helix)** · [demo](https://youtu.be/PbKXB91-NSY) | Sense, diagnose, recover, explain. Fault handling for a live ROS 2 graph. | live GO2, 8 sessions |
 | **[BlackBoxRS](https://github.com/yusufdxb/BlackBoxRS)** | Flight recorder and post-failure forensics: one command turns a field failure into an incident bundle with a timeline, evidence links, and an adoptable prevention rule. | 547 tests; real GO2 bag replay, not a live loop |
 | **[policy-health-monitor](https://github.com/yusufdxb/policy-health-monitor)** | Runtime health monitor for learned policies: reads a policy's internals and the robot's own health signals and arbitrates them into one status with a safe-fallback layer. All C++. | onboard GO2, shadow mode: induced faults reach STOP 5/5, 0 false alarms in 5 min |
-| **[LabLink](https://github.com/yusufdxb/lablink)** | Finds lab machines and robots by name instead of by IP: a Rust daemon, CLI and desktop app that pin SSH host-key identity, run health checks, and give every device a GREEN / YELLOW / RED / GRAY status. Robots reached through their onboard computer (the GO2 via its Jetson). | 0.4.2 public beta (Linux), in daily use in the GO2 lab |
+| **[LabLink](https://github.com/yusufdxb/lablink)** | Finds lab machines and robots by name instead of by IP: a Rust daemon, CLI and desktop app that pin SSH host-key identity, run health checks, and give every device a GREEN / YELLOW / RED / GRAY status. Robots reached through their onboard computer (the GO2 via its Jetson). | 0.4.2 public beta (Linux), in daily use in CARES lab |
 
 ---
 
