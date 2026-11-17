@@ -145,6 +145,9 @@ Where I started, and still the most satisfying when it physically moves.
   <img src="https://img.shields.io/badge/Isaac_Lab-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
   <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
   <img src="https://img.shields.io/badge/ONNX-005CED?style=for-the-badge&logo=onnx&logoColor=white" />
+  <img src="https://img.shields.io/badge/TensorRT-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
+  <img src="https://img.shields.io/badge/CUDA-76B900?style=for-the-badge&logo=nvidia&logoColor=white" />
+  <img src="https://img.shields.io/badge/MuJoCo-1F2937?style=for-the-badge&logoColor=white" />
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
@@ -155,13 +158,14 @@ Where I started, and still the most satisfying when it physically moves.
 
 | Area | Technologies |
 |---|---|
-| **Robotics** | ROS 2 Humble, Nav2, lifecycle nodes, tf2, ros2_control, SLAM Toolbox, Gazebo, Isaac Lab, Isaac Sim |
-| **Learning** | PyTorch, PPO / reinforcement learning, sim-to-real, ONNX + parity gating, out-of-distribution detection |
-| **Perception** | YOLOv8, OpenCV, RealSense D435i, Whisper ASR, GCC-PHAT, open-vocab 3D mapping |
+| **Robotics** | ROS 2 Humble + Jazzy, Nav2, lifecycle nodes, tf2, ros2_control, SLAM Toolbox, CycloneDDS, Unitree SDK2, Gazebo, MuJoCo, Isaac Lab, Isaac Sim |
+| **Learning** | PyTorch, PPO with rsl_rl, sim-to-real, ONNX Runtime + parity gating, TensorRT, CUDA, out-of-distribution detection |
+| **Perception** | YOLOv8, YOLO-World, CLIP, MobileSAM, OpenCV, RealSense D435i, faster-whisper ASR, GCC-PHAT, open-vocab 3D mapping |
+| **Autonomy** | LLM and VLM task planning (Ollama, Claude API), skill sequencing, behavior trees |
 | **Reliability** | Fault detection, incident forensics, fail-closed safety envelopes, acceptance evidence, paired statistical evaluation |
 | **Embedded** | Jetson Orin NX, Arduino, Raspberry Pi, sensor/actuator integration, firmware |
 | **Languages** | C++17, Python 3, Rust, MATLAB, C |
-| **Tools** | Git, Docker, CMake, colcon, Qt 6, Fusion 360 |
+| **Tools** | Git, Docker, CMake, colcon, pytest, GitHub Actions, Qt 6, Fusion 360 |
 
 ---
 
